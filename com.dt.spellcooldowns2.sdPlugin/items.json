@@ -56,8 +56,8 @@
     "basic_haste": "0",
     "ultimate_haste": "0",
     "type": "HP",
-    "img": "2524",
-    "path": "2524.png"
+    "img": "3002",
+    "path": "3002.png"
   },
   {
     "id": "bastionbreaker",
@@ -333,7 +333,7 @@
     "id": "malignance",
     "name": "Malignance",
     "ability_haste": "15",
-    "basic_haste": "15",
+    "basic_haste": "0",
     "ultimate_haste": "20",
     "type": "AP",
     "img": "3118",

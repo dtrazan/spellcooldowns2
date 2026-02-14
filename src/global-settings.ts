@@ -21,6 +21,8 @@ export interface GlobalSettings extends Record<string, any> {
 	itemsGrid?: (ItemData | null)[][];
 	gridRows?: number;
 	gridColumns?: number;
+	current_basic_haste?: number;
+	current_ultimate_haste?: number;
 }
 
 /**
@@ -54,6 +56,14 @@ export class GlobalSettingsManager {
 			this.settings.gridColumns = 4;
 			this.settings.itemsGrid = this.createEmptyGrid(4, 4);
 			await this.saveSettings();
+		}
+
+		// Initialize default haste values if not exists
+		if (this.settings.current_basic_haste === undefined) {
+			this.settings.current_basic_haste = 0;
+		}
+		if (this.settings.current_ultimate_haste === undefined) {
+			this.settings.current_ultimate_haste = 0;
 		}
 
 		// Listen for global settings changes
@@ -155,5 +165,35 @@ export class GlobalSettingsManager {
 	 */
 	getSettings(): GlobalSettings {
 		return { ...this.settings };
+	}
+
+	/**
+	 * Gets the current basic haste value.
+	 */
+	getCurrentBasicHaste(): number {
+		return this.settings.current_basic_haste ?? 0;
+	}
+
+	/**
+	 * Sets the current basic haste value.
+	 */
+	async setCurrentBasicHaste(value: number): Promise<void> {
+		this.settings.current_basic_haste = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current ultimate haste value.
+	 */
+	getCurrentUltimateHaste(): number {
+		return this.settings.current_ultimate_haste ?? 0;
+	}
+
+	/**
+	 * Sets the current ultimate haste value.
+	 */
+	async setCurrentUltimateHaste(value: number): Promise<void> {
+		this.settings.current_ultimate_haste = value;
+		await this.saveSettings();
 	}
 }

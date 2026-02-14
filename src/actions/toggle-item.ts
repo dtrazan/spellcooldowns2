@@ -1,6 +1,6 @@
 import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 import { GlobalSettingsManager, ItemData } from "../global-settings";
-import itemsData from "../../items/items.json";
+import itemsData from "../../com.dt.spellcooldowns2.sdPlugin/items.json";
 
 // Cache for items loaded from items.json
 const itemsCache: ItemData[] = itemsData as ItemData[];
