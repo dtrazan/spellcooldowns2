@@ -93,8 +93,8 @@ export class SetMastery extends SingletonAction<SetMasterySettings> {
 			await this.updateMasteryImage(ev.action, settings.selectedMasteryId, settings.selectedMasteryImg);
 		}
 
-		// Display the mastery name
-		await ev.action.setTitle(settings.selectedMasteryName || "");
+		// Keep title blank
+		await ev.action.setTitle("");
 	}
 
 	/**
@@ -127,7 +127,7 @@ export class SetMastery extends SingletonAction<SetMasterySettings> {
 		if (settings.selectedMasteryImg && settings.selectedMasteryId) {
 			await this.updateMasteryImage(ev.action, settings.selectedMasteryId, settings.selectedMasteryImg);
 		}
-		await ev.action.setTitle(settings.selectedMasteryName || "");
+		await ev.action.setTitle("");
 	}
 
 	/**

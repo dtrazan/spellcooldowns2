@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Champion Rotator Settings</title>
+    <meta charset="utf-8" />
+    <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+    <script>
+        // Load champion data and populate dropdown
+        async function loadChampions() {
+            try {
+                const response = await fetch('../champion/champion.json');
+                const championData = await response.json();
+                
+                const select = document.getElementById('champion-select');
+                
+                // Extract champions from the data object and sort alphabetically
+                const champions = Object.keys(championData.data).map(key => {
+                    const champion = championData.data[key];
+                    return {
+                        id: champion.id,
+                        name: champion.name,
+                        title: champion.title,
+                        image: champion.image.full
+                    };
+                }).sort((a, b) => a.name.localeCompare(b.name));
+                
+                champions.forEach(champion => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify({ 
+                        id: champion.id, 
+                        name: champion.name,
+                        title: champion.title,
+                        image: champion.image
+                    });
+                    option.textContent = `${champion.name} - ${champion.title}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load champions:', error);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', loadChampions);
+    </script>
+</head>
+
+<body>
+    <!--
+        Learn more about property inspector components at https://sdpi-components.dev/docs/components
+    -->
+    <sdpi-item label="Selected Champion">
+        <sdpi-select id="champion-select" setting="selectedChampion">
+            <option value="">Select a champion...</option>
+        </sdpi-select>
+    </sdpi-item>
+</body>
+
+</html>

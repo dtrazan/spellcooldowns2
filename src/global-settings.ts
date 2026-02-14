@@ -27,6 +27,7 @@ export interface GlobalSettings extends Record<string, any> {
 	has_axiom_arcanist?: boolean;
 	has_transcendence?: boolean;
 	has_legend_haste?: boolean;
+	current_champion?: string;
 }
 
 /**
@@ -272,6 +273,21 @@ export class GlobalSettingsManager {
 	 */
 	async setHasLegendHaste(value: boolean): Promise<void> {
 		this.settings.has_legend_haste = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current champion.
+	 */
+	getCurrentChampion(): string | undefined {
+		return this.settings.current_champion;
+	}
+
+	/**
+	 * Sets the current champion.
+	 */
+	async setCurrentChampion(value: string): Promise<void> {
+		this.settings.current_champion = value;
 		await this.saveSettings();
 	}
 }

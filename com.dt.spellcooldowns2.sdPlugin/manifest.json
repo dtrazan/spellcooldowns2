@@ -53,6 +53,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Champion Rotator",
+			"UUID": "com.dt.spellcooldowns2.rotatechampion",
+			"Icon": "imgs/actions/rotate-champion/icon",
+			"Tooltip": "Rotate through League of Legends champions.",
+			"PropertyInspectorPath": "ui/rotate-champion.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/rotate-champion/key",
+					"TitleAlignment": "bottom"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",
