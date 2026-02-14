@@ -1,5 +1,16 @@
 import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
-import { GlobalSettingsManager } from "../global-settings";
+import { GlobalSettingsManager, ItemData } from "../global-settings";
+import itemsData from "../../items/items.json";
+
+// Cache for items loaded from items.json
+const itemsCache: ItemData[] = itemsData as ItemData[];
+
+/**
+ * Load items from items.json file
+ */
+function loadItemsFromJson(): ItemData[] {
+	return itemsCache;
+}
 
 /**
  * An action that allows toggling between League of Legends items.
@@ -27,6 +38,22 @@ export class ToggleItem extends SingletonAction<ToggleItemSettings> {
 		
 		// Update settings with item from grid
 		if (itemFromGrid) {
+			// If item is missing haste properties, load them from items.json
+			if (!itemFromGrid.ability_haste || !itemFromGrid.basic_haste || !itemFromGrid.ultimate_haste) {
+				const allItems = loadItemsFromJson();
+				const fullItem = allItems.find(item => item.id === itemFromGrid.id);
+				if (fullItem) {
+					// Update the grid with the complete item data
+					await manager.setItemAt(settings.currentRow ?? 0, settings.currentColumn ?? 0, {
+						...itemFromGrid,
+						ability_haste: fullItem.ability_haste,
+						basic_haste: fullItem.basic_haste,
+						ultimate_haste: fullItem.ultimate_haste,
+						type: fullItem.type
+					});
+				}
+			}
+			
 			settings.selectedItemId = itemFromGrid.id;
 			settings.selectedItemImg = itemFromGrid.img;
 			settings.selectedItemName = itemFromGrid.name;
@@ -129,10 +156,18 @@ export class ToggleItem extends SingletonAction<ToggleItemSettings> {
 					const currentItem = manager.getItemAt(settings.currentRow, settings.currentColumn);
 					const activated = currentItem?.activated || false;
 					
+					// Load full item data from items.json to get haste values
+					const allItems = loadItemsFromJson();
+					const fullItem = allItems.find(i => i.id === item.id);
+					
 					await manager.setItemAt(settings.currentRow, settings.currentColumn, {
 						id: item.id,
 						name: item.name,
 						img: item.img,
+						ability_haste: fullItem?.ability_haste,
+						basic_haste: fullItem?.basic_haste,
+						ultimate_haste: fullItem?.ultimate_haste,
+						type: fullItem?.type,
 						activated: activated
 					});
 					

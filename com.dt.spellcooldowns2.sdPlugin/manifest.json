@@ -38,6 +38,21 @@
 					"TitleAlignment": "bottom"
 				}
 			]
+		},
+		{
+			"Name": "Display Haste",
+			"UUID": "com.dt.spellcooldowns2.displayhaste",
+			"Icon": "imgs/actions/display-haste/icon",
+			"Tooltip": "Display total ability haste from activated items.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/display-haste/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",
