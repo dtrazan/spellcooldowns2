@@ -18,6 +18,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Toggle Item",
+			"UUID": "com.dt.spellcooldowns2.toggleitem",
+			"Icon": "imgs/actions/toggle-item/icon",
+			"Tooltip": "Toggle between League of Legends items.",
+			"PropertyInspectorPath": "ui/toggle-item.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/toggle-item/key",
+					"TitleAlignment": "bottom"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",
