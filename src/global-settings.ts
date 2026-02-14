@@ -1,0 +1,159 @@
+import streamDeck from "@elgato/streamdeck";
+
+/**
+ * Represents an item in the grid.
+ */
+export interface ItemData {
+	id: string;
+	name: string;
+	img: string;
+	ability_haste?: string;
+	basic_haste?: string;
+	ultimate_haste?: string;
+	type?: string;
+	activated?: boolean;
+}
+
+/**
+ * Global settings for the plugin, including the 2D array of items.
+ */
+export interface GlobalSettings extends Record<string, any> {
+	itemsGrid?: (ItemData | null)[][];
+	gridRows?: number;
+	gridColumns?: number;
+}
+
+/**
+ * Manager class for handling global settings and the items grid.
+ */
+export class GlobalSettingsManager {
+	private static instance: GlobalSettingsManager;
+	private settings: GlobalSettings = {};
+
+	private constructor() {}
+
+	/**
+	 * Gets the singleton instance of the GlobalSettingsManager.
+	 */
+	static getInstance(): GlobalSettingsManager {
+		if (!GlobalSettingsManager.instance) {
+			GlobalSettingsManager.instance = new GlobalSettingsManager();
+		}
+		return GlobalSettingsManager.instance;
+	}
+
+	/**
+	 * Initialize the settings manager and load current global settings.
+	 */
+	async initialize(): Promise<void> {
+		this.settings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
+		
+		// Initialize default grid if not exists
+		if (!this.settings.itemsGrid) {
+			this.settings.gridRows = 4;
+			this.settings.gridColumns = 4;
+			this.settings.itemsGrid = this.createEmptyGrid(4, 4);
+			await this.saveSettings();
+		}
+
+		// Listen for global settings changes
+		streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((ev) => {
+			this.settings = ev.settings;
+		});
+	}
+
+	/**
+	 * Creates an empty 2D array grid.
+	 */
+	private createEmptyGrid(rows: number, columns: number): (ItemData | null)[][] {
+		return Array.from({ length: rows }, () => Array(columns).fill(null));
+	}
+
+	/**
+	 * Gets the current items grid.
+	 */
+	getItemsGrid(): (ItemData | null)[][] {
+		return this.settings.itemsGrid || this.createEmptyGrid(4, 4);
+	}
+
+	/**
+	 * Gets an item at a specific position in the grid.
+	 */
+	getItemAt(row: number, column: number): ItemData | null {
+		const grid = this.getItemsGrid();
+		if (row >= 0 && row < grid.length && column >= 0 && column < grid[row].length) {
+			return grid[row][column];
+		}
+		return null;
+	}
+
+	/**
+	 * Sets an item at a specific position in the grid.
+	 */
+	async setItemAt(row: number, column: number, item: ItemData | null): Promise<void> {
+		const grid = this.getItemsGrid();
+		
+		// Ensure grid is large enough
+		while (grid.length <= row) {
+			grid.push(Array(this.settings.gridColumns || 4).fill(null));
+		}
+		while (grid[row].length <= column) {
+			grid[row].push(null);
+		}
+
+		grid[row][column] = item;
+		this.settings.itemsGrid = grid;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Clears an item at a specific position in the grid.
+	 */
+	async clearItemAt(row: number, column: number): Promise<void> {
+		await this.setItemAt(row, column, null);
+	}
+
+	/**
+	 * Resizes the grid to new dimensions.
+	 */
+	async resizeGrid(rows: number, columns: number): Promise<void> {
+		const currentGrid = this.getItemsGrid();
+		const newGrid = this.createEmptyGrid(rows, columns);
+
+		// Copy existing items to new grid
+		for (let r = 0; r < Math.min(currentGrid.length, rows); r++) {
+			for (let c = 0; c < Math.min(currentGrid[r].length, columns); c++) {
+				newGrid[r][c] = currentGrid[r][c];
+			}
+		}
+
+		this.settings.gridRows = rows;
+		this.settings.gridColumns = columns;
+		this.settings.itemsGrid = newGrid;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the grid dimensions.
+	 */
+	getGridDimensions(): { rows: number; columns: number } {
+		return {
+			rows: this.settings.gridRows || 4,
+			columns: this.settings.gridColumns || 4
+		};
+	}
+
+	/**
+	 * Saves the current settings to global settings.
+	 */
+	private async saveSettings(): Promise<void> {
+		await streamDeck.settings.setGlobalSettings(this.settings);
+	}
+
+	/**
+	 * Gets all settings.
+	 */
+	getSettings(): GlobalSettings {
+		return { ...this.settings };
+	}
+}

@@ -32,6 +32,10 @@
 				{
 					"Image": "imgs/actions/toggle-item/key",
 					"TitleAlignment": "bottom"
+				},
+				{
+					"Image": "imgs/actions/toggle-item/key-active",
+					"TitleAlignment": "bottom"
 				}
 			]
 		}

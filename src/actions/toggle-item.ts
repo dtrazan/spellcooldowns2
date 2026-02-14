@@ -1,4 +1,5 @@
-import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import { GlobalSettingsManager } from "../global-settings";
 
 /**
  * An action that allows toggling between League of Legends items.
@@ -12,51 +13,156 @@ export class ToggleItem extends SingletonAction<ToggleItemSettings> {
 	 */
 	override async onWillAppear(ev: WillAppearEvent<ToggleItemSettings>): Promise<void> {
 		const settings = ev.payload.settings;
+		const manager = GlobalSettingsManager.getInstance();
 		
-		// Set default item if none selected
-		if (!settings.selectedItemId) {
-			settings.selectedItemId = "abyssal_mask";
-			settings.selectedItemImg = "8020";
-			await ev.action.setSettings(settings);
+		// Use the actual coordinates from the Stream Deck device
+		if (settings.currentRow === undefined || settings.currentColumn === undefined) {
+			const coordinates = 'coordinates' in ev.payload ? ev.payload.coordinates : undefined;
+			settings.currentRow = coordinates?.row ?? 0;
+			settings.currentColumn = coordinates?.column ?? 0;
 		}
 
-		// Set the image for the selected item
+		// Get item from global settings at this row/column
+		const itemFromGrid = manager.getItemAt(settings.currentRow ?? 0, settings.currentColumn ?? 0);
+		
+		// Update settings with item from grid
+		if (itemFromGrid) {
+			settings.selectedItemId = itemFromGrid.id;
+			settings.selectedItemImg = itemFromGrid.img;
+			settings.selectedItemName = itemFromGrid.name;
+			settings.isActive = itemFromGrid.activated || false;
+		} else if (!settings.selectedItemId) {
+			// Set default item if no item in grid and none selected
+			settings.selectedItemId = "abyssal_mask";
+			settings.selectedItemImg = "8020";
+			settings.selectedItemName = "Abyssal Mask";
+			settings.isActive = false;
+		}
+
+		// Set default for showName if not set
+		if (settings.showName === undefined) {
+			settings.showName = true;
+		}
+
+		// Save updated settings
+		await ev.action.setSettings(settings);
+
+		// Set the image for the selected item based on activated state
 		if (settings.selectedItemImg) {
-			await ev.action.setImage(`imgs/items/${settings.selectedItemImg}.png`);
+			const imageFolder = settings.isActive ? 'item' : 'deactivated';
+			await ev.action.setImage(`imgs/${imageFolder}/${settings.selectedItemImg}.png`);
+		}
+
+		// Set title to show row and column position
+		await ev.action.setTitle(`${settings.currentRow},${settings.currentColumn}`);
+
+		// Set the visual state based on activated status
+		if ('setState' in ev.action) {
+			await ev.action.setState(settings.isActive ? 1 : 0);
 		}
 	}
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Toggles to the next item in the configured list.
+	 * Toggles the activated state of the current item.
 	 */
 	override async onKeyDown(ev: KeyDownEvent<ToggleItemSettings>): Promise<void> {
 		const settings = ev.payload.settings;
+		const manager = GlobalSettingsManager.getInstance();
 		
-		// If no items list is configured, just toggle the active state
-		if (!settings.itemsList || settings.itemsList.length === 0) {
-			settings.isActive = !settings.isActive;
-			await ev.action.setSettings(settings);
-			await ev.action.setState(settings.isActive ? 1 : 0);
+		// Check if we have a current row/column position
+		if (settings.currentRow === undefined || settings.currentColumn === undefined) {
 			return;
 		}
 
-		// Find current item index and cycle to next
-		const currentIndex = settings.itemsList.findIndex(
-			item => item.id === settings.selectedItemId
-		);
+		// Get the current item from the grid
+		const currentItem = manager.getItemAt(settings.currentRow, settings.currentColumn);
 		
-		const nextIndex = (currentIndex + 1) % settings.itemsList.length;
-		const nextItem = settings.itemsList[nextIndex];
+		if (!currentItem) {
+			// No item at this position, nothing to toggle
+			return;
+		}
 
-		// Update settings with new item
-		settings.selectedItemId = nextItem.id;
-		settings.selectedItemImg = nextItem.img;
-		settings.selectedItemName = nextItem.name;
-
+		// Toggle the activated state
+		currentItem.activated = !currentItem.activated;
+		
+		// Save back to the grid
+		await manager.setItemAt(settings.currentRow, settings.currentColumn, currentItem);
+		
+		// Update local settings
+		settings.isActive = currentItem.activated;
 		await ev.action.setSettings(settings);
-		await ev.action.setImage(`imgs/items/${nextItem.img}.png`);
-		await ev.action.setTitle(nextItem.name);
+		
+		// Update the image based on activated state
+		if (settings.selectedItemImg) {
+			const imageFolder = currentItem.activated ? 'item' : 'deactivated';
+			await ev.action.setImage(`imgs/${imageFolder}/${settings.selectedItemImg}.png`);
+		}
+		
+		// Update the visual state (0 = off, 1 = on)
+		if ('setState' in ev.action) {
+			await ev.action.setState(currentItem.activated ? 1 : 0);
+		}
+	}
+
+	/**
+	 * Listens for settings changes from the Property Inspector and updates the display accordingly.
+	 */
+	override async onDidReceiveSettings(ev: DidReceiveSettingsEvent<ToggleItemSettings>): Promise<void> {
+		const settings = ev.payload.settings;
+		const manager = GlobalSettingsManager.getInstance();
+
+		// Handle selectedItem change from Property Inspector (stored as JSON string)
+		if (settings.selectedItem) {
+			try {
+				const item = typeof settings.selectedItem === 'string' 
+					? JSON.parse(settings.selectedItem) 
+					: settings.selectedItem;
+				
+				settings.selectedItemId = item.id;
+				settings.selectedItemImg = item.img;
+				settings.selectedItemName = item.name;
+				
+				// Save to global grid if row/column are set
+				if (settings.currentRow !== undefined && settings.currentColumn !== undefined) {
+					// Get current item to preserve activated state
+					const currentItem = manager.getItemAt(settings.currentRow, settings.currentColumn);
+					const activated = currentItem?.activated || false;
+					
+					await manager.setItemAt(settings.currentRow, settings.currentColumn, {
+						id: item.id,
+						name: item.name,
+						img: item.img,
+						activated: activated
+					});
+					
+					settings.isActive = activated;
+					
+					// Update the image based on activated state
+					const imageFolder = activated ? 'item' : 'deactivated';
+					await ev.action.setImage(`imgs/${imageFolder}/${item.img}.png`);
+				} else {
+					// If no row/column, just update the image normally
+					await ev.action.setImage(`imgs/item/${item.img}.png`);
+				}
+				
+				// Save the parsed values
+				await ev.action.setSettings(settings);
+			} catch (error) {
+				console.error('Failed to parse selectedItem:', error);
+			}
+		}
+
+		// Update the image if selectedItemImg exists
+		if (settings.selectedItemImg) {
+			const imageFolder = settings.isActive ? 'item' : 'deactivated';
+			await ev.action.setImage(`imgs/${imageFolder}/${settings.selectedItemImg}.png`);
+		}
+
+		// Update title to show row and column position
+		if (settings.currentRow !== undefined && settings.currentColumn !== undefined) {
+			await ev.action.setTitle(`${settings.currentRow},${settings.currentColumn}`);
+		}
 	}
 }
 
@@ -64,13 +170,17 @@ export class ToggleItem extends SingletonAction<ToggleItemSettings> {
  * Settings for {@link ToggleItem}.
  */
 type ToggleItemSettings = {
+	currentRow?: number;
+	currentColumn?: number;
 	selectedItemId?: string;
 	selectedItemImg?: string;
 	selectedItemName?: string;
+	selectedItem?: string | { id: string; name: string; img: string };
 	itemsList?: Array<{
 		id: string;
 		name: string;
 		img: string;
 	}>;
 	isActive?: boolean;
+	showName?: boolean;
 };
