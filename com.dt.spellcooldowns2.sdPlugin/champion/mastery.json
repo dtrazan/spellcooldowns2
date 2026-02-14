@@ -1,0 +1,34 @@
+[
+  {
+    "id": "cd_shard",
+    "name": "CD Shard",
+    "ability_haste": "8",
+    "basic_haste": "0",
+    "ultimate_haste": "0",
+    "img": "cd_shard.png"
+  },
+  {
+    "id": "axiom_arcanist",
+    "name": "Axiom Arcanist",
+    "ability_haste": "0",
+    "basic_haste": "0",
+    "ultimate_haste": "0",
+    "img": "axiom_arcanist.png"
+  },
+  {
+    "id": "transcendence",
+    "name": "Transcendence",
+    "ability_haste": "0",
+    "basic_haste": "0",
+    "ultimate_haste": "0",
+    "img": "transcendence.png"
+  },
+  {
+    "id": "legend_haste",
+    "name": "Legend: Haste",
+    "ability_haste": "0",
+    "basic_haste": "0",
+    "ultimate_haste": "0",
+    "img": "legend_haste.png"
+  }
+]

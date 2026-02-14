@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Set Mastery Settings</title>
+    <meta charset="utf-8" />
+    <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+    <script>
+        // Load mastery data and populate dropdown
+        async function loadMasteries() {
+            try {
+                const response = await fetch('../champion/mastery.json');
+                const masteries = await response.json();
+                
+                const select = document.getElementById('mastery-select');
+                masteries.forEach(mastery => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify({ 
+                        id: mastery.id, 
+                        name: mastery.name, 
+                        img: mastery.img,
+                        ability_haste: mastery.ability_haste,
+                        basic_haste: mastery.basic_haste,
+                        ultimate_haste: mastery.ultimate_haste
+                    });
+                    option.textContent = `${mastery.name}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load masteries:', error);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', loadMasteries);
+    </script>
+</head>
+
+<body>
+    <!--
+        Learn more about property inspector components at https://sdpi-components.dev/docs/components
+    -->
+    <sdpi-item label="Selected Mastery">
+        <sdpi-select id="mastery-select" setting="selectedMastery">
+            <option value="">Select a mastery...</option>
+        </sdpi-select>
+    </sdpi-item>
+</body>
+
+</html>

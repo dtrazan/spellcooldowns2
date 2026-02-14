@@ -37,6 +37,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Set Mastery",
+			"UUID": "com.dt.spellcooldowns2.setmastery",
+			"Icon": "imgs/actions/set-mastery/icon",
+			"Tooltip": "Set mastery level by pressing the key.",
+			"PropertyInspectorPath": "ui/set-mastery.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/set-mastery/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",

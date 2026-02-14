@@ -23,6 +23,10 @@ export interface GlobalSettings extends Record<string, any> {
 	gridColumns?: number;
 	current_basic_haste?: number;
 	current_ultimate_haste?: number;
+	has_cd_shard?: boolean;
+	has_axiom_arcanist?: boolean;
+	has_transcendence?: boolean;
+	has_legend_haste?: boolean;
 }
 
 /**
@@ -64,6 +68,20 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.current_ultimate_haste === undefined) {
 			this.settings.current_ultimate_haste = 0;
+		}
+
+		// Initialize default mastery flags if not exists
+		if (this.settings.has_cd_shard === undefined) {
+			this.settings.has_cd_shard = false;
+		}
+		if (this.settings.has_axiom_arcanist === undefined) {
+			this.settings.has_axiom_arcanist = false;
+		}
+		if (this.settings.has_transcendence === undefined) {
+			this.settings.has_transcendence = false;
+		}
+		if (this.settings.has_legend_haste === undefined) {
+			this.settings.has_legend_haste = false;
 		}
 
 		// Listen for global settings changes
@@ -194,6 +212,66 @@ export class GlobalSettingsManager {
 	 */
 	async setCurrentUltimateHaste(value: number): Promise<void> {
 		this.settings.current_ultimate_haste = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets whether CD Shard mastery is active.
+	 */
+	getHasCdShard(): boolean {
+		return this.settings.has_cd_shard ?? false;
+	}
+
+	/**
+	 * Sets whether CD Shard mastery is active.
+	 */
+	async setHasCdShard(value: boolean): Promise<void> {
+		this.settings.has_cd_shard = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets whether Axiom Arcanist mastery is active.
+	 */
+	getHasAxiomArcanist(): boolean {
+		return this.settings.has_axiom_arcanist ?? false;
+	}
+
+	/**
+	 * Sets whether Axiom Arcanist mastery is active.
+	 */
+	async setHasAxiomArcanist(value: boolean): Promise<void> {
+		this.settings.has_axiom_arcanist = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets whether Transcendence mastery is active.
+	 */
+	getHasTranscendence(): boolean {
+		return this.settings.has_transcendence ?? false;
+	}
+
+	/**
+	 * Sets whether Transcendence mastery is active.
+	 */
+	async setHasTranscendence(value: boolean): Promise<void> {
+		this.settings.has_transcendence = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets whether Legend: Haste mastery is active.
+	 */
+	getHasLegendHaste(): boolean {
+		return this.settings.has_legend_haste ?? false;
+	}
+
+	/**
+	 * Sets whether Legend: Haste mastery is active.
+	 */
+	async setHasLegendHaste(value: boolean): Promise<void> {
+		this.settings.has_legend_haste = value;
 		await this.saveSettings();
 	}
 }
