@@ -3,7 +3,7 @@ import streamDeck from "@elgato/streamdeck";
 import { ToggleItem } from "./actions/toggle-item";
 import { DisplayHaste } from "./actions/display-haste";
 import { SetMastery } from "./actions/set-mastery";
-import { RotateChampion } from "./actions/rotate-champion";
+import { RotateChampion } from "./actions/champion-rotator";
 import { GlobalSettingsManager } from "./global-settings";
 
 // We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information

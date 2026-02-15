@@ -33,7 +33,7 @@ function loadChampionsFromJson(): ChampionData[] {
 /**
  * An action that allows rotating through champions.
  */
-@action({ UUID: "com.dt.spellcooldowns2.rotatechampion" })
+@action({ UUID: "com.dt.spellcooldowns2.championrotator" })
 export class RotateChampion extends SingletonAction<RotateChampionSettings> {
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.

@@ -56,16 +56,16 @@
 		},
 		{
 			"Name": "Champion Rotator",
-			"UUID": "com.dt.spellcooldowns2.rotatechampion",
+			"UUID": "com.dt.spellcooldowns2.championrotator",
 			"Icon": "imgs/actions/rotate-champion/icon",
 			"Tooltip": "Rotate through League of Legends champions.",
-			"PropertyInspectorPath": "ui/rotate-champion.html",
+			"PropertyInspectorPath": "ui/champion-rotator.html",
 			"Controllers": [
 				"Keypad"
 			],
 			"States": [
 				{
-					"Image": "imgs/actions/rotate-champion/key",
+					"Image": "imgs/actions/champion-rotator/key",
 					"TitleAlignment": "bottom"
 				}
 			]
