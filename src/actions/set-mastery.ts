@@ -163,6 +163,23 @@ export class SetMastery extends SingletonAction<SetMasterySettings> {
 			if (settings.selectedMasteryImg) {
 				await this.updateMasteryImage(ev.action, settings.selectedMasteryId, settings.selectedMasteryImg);
 			}
+
+			// Update current_mastery_haste based on active masteries
+			const oldMasteryHaste = manager.getCurrentMasteryHaste();
+			let masteryHaste = 0;
+			if (manager.getHasCdShard()) {
+				masteryHaste += manager.getCdShardBonus();
+			}
+			if (manager.getHasLegendHaste()) {
+				masteryHaste += manager.getCdLegendBonus();
+			}
+			await manager.setCurrentMasteryHaste(masteryHaste);
+
+			// Update current_basic_haste and current_ultimate_haste by adjusting for mastery haste change
+			const currentBasicHaste = manager.getCurrentBasicHaste();
+			const currentUltimateHaste = manager.getCurrentUltimateHaste();
+			await manager.setCurrentBasicHaste(currentBasicHaste - oldMasteryHaste + masteryHaste);
+			await manager.setCurrentUltimateHaste(currentUltimateHaste - oldMasteryHaste + masteryHaste);
 		}
 	}
 }

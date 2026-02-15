@@ -68,11 +68,14 @@ export class DisplayHaste extends SingletonAction<DisplayHasteSettings> {
 			}
 		}
 
-		// Calculate current basic haste (ability haste + basic haste)
-		const currentBasicHaste = totalAbilityHaste + totalBasicHaste;
+		// Get mastery haste to include in calculations
+		const masteryHaste = manager.getCurrentMasteryHaste();
 		
-		// Calculate current ultimate haste (ability haste + ultimate haste)
-		const currentUltimateHaste = totalAbilityHaste + totalUltimateHaste;
+		// Calculate current basic haste (ability haste + basic haste + mastery haste)
+		const currentBasicHaste = totalAbilityHaste + totalBasicHaste + masteryHaste;
+		
+		// Calculate current ultimate haste (ability haste + ultimate haste + mastery haste)
+		const currentUltimateHaste = totalAbilityHaste + totalUltimateHaste + masteryHaste;
 		
 		// Update global settings with calculated values
 		await manager.setCurrentBasicHaste(currentBasicHaste);

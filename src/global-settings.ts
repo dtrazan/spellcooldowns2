@@ -24,10 +24,13 @@ export interface GlobalSettings extends Record<string, any> {
 	ability_matrix?: number[][];
 	current_basic_haste?: number;
 	current_ultimate_haste?: number;
+	current_mastery_haste?: number;
 	has_cd_shard?: boolean;
 	has_axiom_arcanist?: boolean;
 	has_transcendence?: boolean;
 	has_legend_haste?: boolean;
+	cd_shard_bonus?: number;
+	cd_legend_bonus?: number;
 	current_champion?: string;
 	current_champion_level?: number;
 	current_q_level?: number;
@@ -83,6 +86,9 @@ export class GlobalSettingsManager {
 		if (this.settings.current_ultimate_haste === undefined) {
 			this.settings.current_ultimate_haste = 0;
 		}
+		if (this.settings.current_mastery_haste === undefined) {
+			this.settings.current_mastery_haste = 0;
+		}
 
 		// Initialize default mastery flags if not exists
 		if (this.settings.has_cd_shard === undefined) {
@@ -96,6 +102,14 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.has_legend_haste === undefined) {
 			this.settings.has_legend_haste = false;
+		}
+
+		// Initialize default bonus values if not exists
+		if (this.settings.cd_shard_bonus === undefined) {
+			this.settings.cd_shard_bonus = 8;
+		}
+		if (this.settings.cd_legend_bonus === undefined) {
+			this.settings.cd_legend_bonus = 0;
 		}
 
 		// Initialize default champion level if not exists
@@ -329,6 +343,21 @@ export class GlobalSettingsManager {
 	}
 
 	/**
+	 * Gets the current mastery haste value.
+	 */
+	getCurrentMasteryHaste(): number {
+		return this.settings.current_mastery_haste ?? 0;
+	}
+
+	/**
+	 * Sets the current mastery haste value.
+	 */
+	async setCurrentMasteryHaste(value: number): Promise<void> {
+		this.settings.current_mastery_haste = value;
+		await this.saveSettings();
+	}
+
+	/**
 	 * Gets whether CD Shard mastery is active.
 	 */
 	getHasCdShard(): boolean {
@@ -385,6 +414,36 @@ export class GlobalSettingsManager {
 	 */
 	async setHasLegendHaste(value: boolean): Promise<void> {
 		this.settings.has_legend_haste = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the CD Shard bonus value.
+	 */
+	getCdShardBonus(): number {
+		return this.settings.cd_shard_bonus ?? 0;
+	}
+
+	/**
+	 * Sets the CD Shard bonus value.
+	 */
+	async setCdShardBonus(value: number): Promise<void> {
+		this.settings.cd_shard_bonus = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the CD Legend bonus value.
+	 */
+	getCdLegendBonus(): number {
+		return this.settings.cd_legend_bonus ?? 0;
+	}
+
+	/**
+	 * Sets the CD Legend bonus value.
+	 */
+	async setCdLegendBonus(value: number): Promise<void> {
+		this.settings.cd_legend_bonus = value;
 		await this.saveSettings();
 	}
 
