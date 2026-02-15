@@ -31,6 +31,7 @@ export interface GlobalSettings extends Record<string, any> {
 	has_legend_haste?: boolean;
 	cd_shard_bonus?: number;
 	cd_legend_bonus?: number;
+	current_legend_stack?: number;
 	current_champion?: string;
 	current_champion_level?: number;
 	current_q_level?: number;
@@ -110,6 +111,9 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.cd_legend_bonus === undefined) {
 			this.settings.cd_legend_bonus = 0;
+		}
+		if (this.settings.current_legend_stacks === undefined) {
+			this.settings.current_legend_stacks = 0;
 		}
 
 		// Initialize default champion level if not exists
@@ -444,6 +448,21 @@ export class GlobalSettingsManager {
 	 */
 	async setCdLegendBonus(value: number): Promise<void> {
 		this.settings.cd_legend_bonus = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current legend stacks value.
+	 */
+	getCurrentLegendStack(): number {
+		return this.settings.current_legend_stack ?? 0;
+	}
+
+	/**
+	 * Sets the current legend stacks value.
+	 */
+	async setCurrentLegendStack(value: number): Promise<void> {
+		this.settings.current_legend_stack = value;
 		await this.saveSettings();
 	}
 

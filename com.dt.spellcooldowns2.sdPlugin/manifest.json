@@ -160,6 +160,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Increment Legend Stack",
+			"UUID": "com.dt.spellcooldowns2.incrementlegendstack",
+			"Icon": "imgs/actions/increment-legend-stack/icon",
+			"Tooltip": "Increment Legend: Haste stacks (max 10).",
+			"PropertyInspectorPath": "ui/increment-legend-stack.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/increment-legend-stack/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",
