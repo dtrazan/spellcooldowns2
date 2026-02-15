@@ -165,7 +165,7 @@
 			"Name": "Increment Legend Stack",
 			"UUID": "com.dt.spellcooldowns2.incrementlegendstack",
 			"Icon": "imgs/actions/increment-legend-stack/icon",
-			"Tooltip": "Increment Legend: Haste stacks (max 10).",
+			"Tooltip": "Increment Legend: Haste stacks (max 15).",
 			"PropertyInspectorPath": "ui/increment-legend-stack.html",
 			"Controllers": [
 				"Keypad"

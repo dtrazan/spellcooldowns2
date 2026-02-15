@@ -2,12 +2,12 @@ import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillApp
 import { GlobalSettingsManager } from "../global-settings";
 
 /**
- * An action that increments the legend stacks (max 10).
+ * An action that increments the legend stacks (max 15).
  */
 @action({ UUID: "com.dt.spellcooldowns2.incrementlegendstack" })
 export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSettings> {
-	private static readonly MAX_STACKS = 10;
-	private static readonly HASTE_PER_STACK = 1; // Adjust this value based on game mechanics
+	private static readonly MAX_STACKS = 15;
+	private static readonly HASTE_PER_STACK = 1.5; // Adjust this value based on game mechanics
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
@@ -49,7 +49,7 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Increments the legend stacks (max 10, then wraps to 0).
+	 * Increments the legend stacks (max 15, then wraps to 0).
 	 */
 	override async onKeyDown(ev: KeyDownEvent<IncrementLegendStackSettings>): Promise<void> {
 		const manager = GlobalSettingsManager.getInstance();
@@ -71,7 +71,7 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 
 	/**
 	 * Updates the cd_legend_bonus based on the number of stacks and recalculates mastery haste.
-	 * @param stacks The number of legend stacks (0-10)
+	 * @param stacks The number of legend stacks (0-15)
 	 */
 	private async updateLegendBonus(stacks: number): Promise<void> {
 		const manager = GlobalSettingsManager.getInstance();

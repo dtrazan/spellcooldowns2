@@ -106,14 +106,23 @@ export class GlobalSettingsManager {
 		}
 
 		// Initialize default bonus values if not exists
+		let bonusValuesNeedSave = false;
 		if (this.settings.cd_shard_bonus === undefined) {
 			this.settings.cd_shard_bonus = 8;
+			bonusValuesNeedSave = true;
 		}
 		if (this.settings.cd_legend_bonus === undefined) {
 			this.settings.cd_legend_bonus = 0;
+			bonusValuesNeedSave = true;
 		}
 		if (this.settings.current_legend_stacks === undefined) {
 			this.settings.current_legend_stacks = 0;
+			bonusValuesNeedSave = true;
+		}
+
+		// Save if any values were initialized
+		if (bonusValuesNeedSave) {
+			await this.saveSettings();
 		}
 
 		// Initialize default champion level if not exists
