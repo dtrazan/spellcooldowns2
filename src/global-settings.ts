@@ -434,7 +434,7 @@ export class GlobalSettingsManager {
 	 * Gets the CD Shard bonus value.
 	 */
 	getCdShardBonus(): number {
-		return this.settings.cd_shard_bonus ?? 0;
+		return this.settings.cd_shard_bonus ?? 8;
 	}
 
 	/**
