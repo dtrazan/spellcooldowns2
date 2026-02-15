@@ -3,15 +3,11 @@ import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champio
 import { GlobalSettingsManager } from "../global-settings";
 
 // Cache for champions loaded from champion.json
-const championCache: ChampionData[] = Object.keys(championData.data).map(key => {
-	const champion = championData.data[key as keyof typeof championData.data];
-	return {
-		id: champion.id,
-		name: champion.name,
-		title: champion.title,
-		image: champion.image.full
-	};
-});
+const championCache: ChampionData[] = championData.map(champion => ({
+	id: champion.id,
+	name: champion.name,
+	image: champion.img
+}));
 
 /**
  * Represents a champion item.
@@ -19,7 +15,6 @@ const championCache: ChampionData[] = Object.keys(championData.data).map(key => 
 interface ChampionData {
 	id: string;
 	name: string;
-	title: string;
 	image: string;
 }
 
@@ -81,8 +76,11 @@ export class RotateChampion extends SingletonAction<RotateChampionSettings> {
 				// Update global current_champion setting
 				await manager.setCurrentChampion(championData.id);
 				
+				// Handle both 'img' (from property inspector) and 'image' (legacy) fields
+				const imageFile = championData.img || championData.image;
+				
 				// Update the display with the selected champion
-				await ev.action.setImage(`imgs/champion/${championData.image}`);
+				await ev.action.setImage(`imgs/champion/${imageFile}`);
 				await ev.action.setTitle(championData.name || "");
 			} catch (e) {
 				console.error('Failed to parse selected champion:', e);

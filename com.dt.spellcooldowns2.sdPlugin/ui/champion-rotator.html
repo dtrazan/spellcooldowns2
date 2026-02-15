@@ -5,45 +5,6 @@
     <title>Champion Rotator Settings</title>
     <meta charset="utf-8" />
     <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
-    <script>
-        // Load champion data and populate dropdown
-        async function loadChampions() {
-            try {
-                const response = await fetch('../champion/champion.json');
-                const championData = await response.json();
-                
-                const select = document.getElementById('champion-select');
-                
-                // Extract champions from the data object and sort alphabetically
-                const champions = Object.keys(championData.data).map(key => {
-                    const champion = championData.data[key];
-                    return {
-                        id: champion.id,
-                        name: champion.name,
-                        title: champion.title,
-                        image: champion.image.full
-                    };
-                }).sort((a, b) => a.name.localeCompare(b.name));
-                
-                champions.forEach(champion => {
-                    const option = document.createElement('option');
-                    option.value = JSON.stringify({ 
-                        id: champion.id, 
-                        name: champion.name,
-                        title: champion.title,
-                        image: champion.image
-                    });
-                    option.textContent = `${champion.name}`;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Failed to load champions:', error);
-            }
-        }
-
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', loadChampions);
-    </script>
 </head>
 
 <body>
@@ -53,6 +14,178 @@
     <sdpi-item label="Selected Champion">
         <sdpi-select id="champion-select" setting="selectedChampion">
             <option value="">Select a champion...</option>
+            <option value='{"id":"Aatrox","name":"Aatrox","img":"Aatrox.png"}'>Aatrox</option>
+            <option value='{"id":"Ahri","name":"Ahri","img":"Ahri.png"}'>Ahri</option>
+            <option value='{"id":"Akali","name":"Akali","img":"Akali.png"}'>Akali</option>
+            <option value='{"id":"Akshan","name":"Akshan","img":"Akshan.png"}'>Akshan</option>
+            <option value='{"id":"Alistar","name":"Alistar","img":"Alistar.png"}'>Alistar</option>
+            <option value='{"id":"Ambessa","name":"Ambessa","img":"Ambessa.png"}'>Ambessa</option>
+            <option value='{"id":"Amumu","name":"Amumu","img":"Amumu.png"}'>Amumu</option>
+            <option value='{"id":"Anivia","name":"Anivia","img":"Anivia.png"}'>Anivia</option>
+            <option value='{"id":"Annie","name":"Annie","img":"Annie.png"}'>Annie</option>
+            <option value='{"id":"Aphelios","name":"Aphelios","img":"Aphelios.png"}'>Aphelios</option>
+            <option value='{"id":"Ashe","name":"Ashe","img":"Ashe.png"}'>Ashe</option>
+            <option value='{"id":"AurelionSol","name":"Aurelion Sol","img":"AurelionSol.png"}'>Aurelion Sol</option>
+            <option value='{"id":"Aurora","name":"Aurora","img":"Aurora.png"}'>Aurora</option>
+            <option value='{"id":"Azir","name":"Azir","img":"Azir.png"}'>Azir</option>
+            <option value='{"id":"Bard","name":"Bard","img":"Bard.png"}'>Bard</option>
+            <option value='{"id":"Belveth","name":"Bel'Veth","img":"Belveth.png"}'>Bel'Veth</option>
+            <option value='{"id":"Blitzcrank","name":"Blitzcrank","img":"Blitzcrank.png"}'>Blitzcrank</option>
+            <option value='{"id":"Brand","name":"Brand","img":"Brand.png"}'>Brand</option>
+            <option value='{"id":"Braum","name":"Braum","img":"Braum.png"}'>Braum</option>
+            <option value='{"id":"Briar","name":"Briar","img":"Briar.png"}'>Briar</option>
+            <option value='{"id":"Caitlyn","name":"Caitlyn","img":"Caitlyn.png"}'>Caitlyn</option>
+            <option value='{"id":"Camille","name":"Camille","img":"Camille.png"}'>Camille</option>
+            <option value='{"id":"Cassiopeia","name":"Cassiopeia","img":"Cassiopeia.png"}'>Cassiopeia</option>
+            <option value='{"id":"Chogath","name":"Cho'Gath","img":"Chogath.png"}'>Cho'Gath</option>
+            <option value='{"id":"Corki","name":"Corki","img":"Corki.png"}'>Corki</option>
+            <option value='{"id":"Darius","name":"Darius","img":"Darius.png"}'>Darius</option>
+            <option value='{"id":"Diana","name":"Diana","img":"Diana.png"}'>Diana</option>
+            <option value='{"id":"Draven","name":"Draven","img":"Draven.png"}'>Draven</option>
+            <option value='{"id":"DrMundo","name":"Dr. Mundo","img":"DrMundo.png"}'>Dr. Mundo</option>
+            <option value='{"id":"Ekko","name":"Ekko","img":"Ekko.png"}'>Ekko</option>
+            <option value='{"id":"Elise","name":"Elise","img":"Elise.png"}'>Elise</option>
+            <option value='{"id":"Evelynn","name":"Evelynn","img":"Evelynn.png"}'>Evelynn</option>
+            <option value='{"id":"Ezreal","name":"Ezreal","img":"Ezreal.png"}'>Ezreal</option>
+            <option value='{"id":"Fiddlesticks","name":"Fiddlesticks","img":"Fiddlesticks.png"}'>Fiddlesticks</option>
+            <option value='{"id":"Fiora","name":"Fiora","img":"Fiora.png"}'>Fiora</option>
+            <option value='{"id":"Fizz","name":"Fizz","img":"Fizz.png"}'>Fizz</option>
+            <option value='{"id":"Galio","name":"Galio","img":"Galio.png"}'>Galio</option>
+            <option value='{"id":"Gangplank","name":"Gangplank","img":"Gangplank.png"}'>Gangplank</option>
+            <option value='{"id":"Garen","name":"Garen","img":"Garen.png"}'>Garen</option>
+            <option value='{"id":"Gnar","name":"Gnar","img":"Gnar.png"}'>Gnar</option>
+            <option value='{"id":"Gragas","name":"Gragas","img":"Gragas.png"}'>Gragas</option>
+            <option value='{"id":"Graves","name":"Graves","img":"Graves.png"}'>Graves</option>
+            <option value='{"id":"Gwen","name":"Gwen","img":"Gwen.png"}'>Gwen</option>
+            <option value='{"id":"Hecarim","name":"Hecarim","img":"Hecarim.png"}'>Hecarim</option>
+            <option value='{"id":"Heimerdinger","name":"Heimerdinger","img":"Heimerdinger.png"}'>Heimerdinger</option>
+            <option value='{"id":"Hwei","name":"Hwei","img":"Hwei.png"}'>Hwei</option>
+            <option value='{"id":"Illaoi","name":"Illaoi","img":"Illaoi.png"}'>Illaoi</option>
+            <option value='{"id":"Irelia","name":"Irelia","img":"Irelia.png"}'>Irelia</option>
+            <option value='{"id":"Ivern","name":"Ivern","img":"Ivern.png"}'>Ivern</option>
+            <option value='{"id":"Janna","name":"Janna","img":"Janna.png"}'>Janna</option>
+            <option value='{"id":"JarvanIV","name":"Jarvan IV","img":"JarvanIV.png"}'>Jarvan IV</option>
+            <option value='{"id":"Jax","name":"Jax","img":"Jax.png"}'>Jax</option>
+            <option value='{"id":"Jayce","name":"Jayce","img":"Jayce.png"}'>Jayce</option>
+            <option value='{"id":"Jhin","name":"Jhin","img":"Jhin.png"}'>Jhin</option>
+            <option value='{"id":"Jinx","name":"Jinx","img":"Jinx.png"}'>Jinx</option>
+            <option value='{"id":"Kaisa","name":"Kai'Sa","img":"Kaisa.png"}'>Kai'Sa</option>
+            <option value='{"id":"Kalista","name":"Kalista","img":"Kalista.png"}'>Kalista</option>
+            <option value='{"id":"Karma","name":"Karma","img":"Karma.png"}'>Karma</option>
+            <option value='{"id":"Karthus","name":"Karthus","img":"Karthus.png"}'>Karthus</option>
+            <option value='{"id":"Kassadin","name":"Kassadin","img":"Kassadin.png"}'>Kassadin</option>
+            <option value='{"id":"Katarina","name":"Katarina","img":"Katarina.png"}'>Katarina</option>
+            <option value='{"id":"Kayle","name":"Kayle","img":"Kayle.png"}'>Kayle</option>
+            <option value='{"id":"Kayn","name":"Kayn","img":"Kayn.png"}'>Kayn</option>
+            <option value='{"id":"Kennen","name":"Kennen","img":"Kennen.png"}'>Kennen</option>
+            <option value='{"id":"Khazix","name":"Kha'Zix","img":"Khazix.png"}'>Kha'Zix</option>
+            <option value='{"id":"Kindred","name":"Kindred","img":"Kindred.png"}'>Kindred</option>
+            <option value='{"id":"Kled","name":"Kled","img":"Kled.png"}'>Kled</option>
+            <option value='{"id":"KogMaw","name":"Kog'Maw","img":"KogMaw.png"}'>Kog'Maw</option>
+            <option value='{"id":"KSante","name":"K'Sante","img":"KSante.png"}'>K'Sante</option>
+            <option value='{"id":"Leblanc","name":"LeBlanc","img":"Leblanc.png"}'>LeBlanc</option>
+            <option value='{"id":"LeeSin","name":"Lee Sin","img":"LeeSin.png"}'>Lee Sin</option>
+            <option value='{"id":"Leona","name":"Leona","img":"Leona.png"}'>Leona</option>
+            <option value='{"id":"Lillia","name":"Lillia","img":"Lillia.png"}'>Lillia</option>
+            <option value='{"id":"Lissandra","name":"Lissandra","img":"Lissandra.png"}'>Lissandra</option>
+            <option value='{"id":"Lucian","name":"Lucian","img":"Lucian.png"}'>Lucian</option>
+            <option value='{"id":"Lulu","name":"Lulu","img":"Lulu.png"}'>Lulu</option>
+            <option value='{"id":"Lux","name":"Lux","img":"Lux.png"}'>Lux</option>
+            <option value='{"id":"Malphite","name":"Malphite","img":"Malphite.png"}'>Malphite</option>
+            <option value='{"id":"Malzahar","name":"Malzahar","img":"Malzahar.png"}'>Malzahar</option>
+            <option value='{"id":"Maokai","name":"Maokai","img":"Maokai.png"}'>Maokai</option>
+            <option value='{"id":"MasterYi","name":"Master Yi","img":"MasterYi.png"}'>Master Yi</option>
+            <option value='{"id":"Mel","name":"Mel","img":"Mel.png"}'>Mel</option>
+            <option value='{"id":"Milio","name":"Milio","img":"Milio.png"}'>Milio</option>
+            <option value='{"id":"MissFortune","name":"Miss Fortune","img":"MissFortune.png"}'>Miss Fortune</option>
+            <option value='{"id":"MonkeyKing","name":"Wukong","img":"MonkeyKing.png"}'>Wukong</option>
+            <option value='{"id":"Mordekaiser","name":"Mordekaiser","img":"Mordekaiser.png"}'>Mordekaiser</option>
+            <option value='{"id":"Morgana","name":"Morgana","img":"Morgana.png"}'>Morgana</option>
+            <option value='{"id":"Naafiri","name":"Naafiri","img":"Naafiri.png"}'>Naafiri</option>
+            <option value='{"id":"Nami","name":"Nami","img":"Nami.png"}'>Nami</option>
+            <option value='{"id":"Nasus","name":"Nasus","img":"Nasus.png"}'>Nasus</option>
+            <option value='{"id":"Nautilus","name":"Nautilus","img":"Nautilus.png"}'>Nautilus</option>
+            <option value='{"id":"Neeko","name":"Neeko","img":"Neeko.png"}'>Neeko</option>
+            <option value='{"id":"Nidalee","name":"Nidalee","img":"Nidalee.png"}'>Nidalee</option>
+            <option value='{"id":"Nilah","name":"Nilah","img":"Nilah.png"}'>Nilah</option>
+            <option value='{"id":"Nocturne","name":"Nocturne","img":"Nocturne.png"}'>Nocturne</option>
+            <option value='{"id":"Nunu","name":"Nunu & Willump","img":"Nunu.png"}'>Nunu & Willump</option>
+            <option value='{"id":"Olaf","name":"Olaf","img":"Olaf.png"}'>Olaf</option>
+            <option value='{"id":"Orianna","name":"Orianna","img":"Orianna.png"}'>Orianna</option>
+            <option value='{"id":"Ornn","name":"Ornn","img":"Ornn.png"}'>Ornn</option>
+            <option value='{"id":"Pantheon","name":"Pantheon","img":"Pantheon.png"}'>Pantheon</option>
+            <option value='{"id":"Poppy","name":"Poppy","img":"Poppy.png"}'>Poppy</option>
+            <option value='{"id":"Pyke","name":"Pyke","img":"Pyke.png"}'>Pyke</option>
+            <option value='{"id":"Qiyana","name":"Qiyana","img":"Qiyana.png"}'>Qiyana</option>
+            <option value='{"id":"Quinn","name":"Quinn","img":"Quinn.png"}'>Quinn</option>
+            <option value='{"id":"Rakan","name":"Rakan","img":"Rakan.png"}'>Rakan</option>
+            <option value='{"id":"Rammus","name":"Rammus","img":"Rammus.png"}'>Rammus</option>
+            <option value='{"id":"RekSai","name":"Rek'Sai","img":"RekSai.png"}'>Rek'Sai</option>
+            <option value='{"id":"Rell","name":"Rell","img":"Rell.png"}'>Rell</option>
+            <option value='{"id":"Renata","name":"Renata Glasc","img":"Renata.png"}'>Renata Glasc</option>
+            <option value='{"id":"Renekton","name":"Renekton","img":"Renekton.png"}'>Renekton</option>
+            <option value='{"id":"Rengar","name":"Rengar","img":"Rengar.png"}'>Rengar</option>
+            <option value='{"id":"Riven","name":"Riven","img":"Riven.png"}'>Riven</option>
+            <option value='{"id":"Rumble","name":"Rumble","img":"Rumble.png"}'>Rumble</option>
+            <option value='{"id":"Ryze","name":"Ryze","img":"Ryze.png"}'>Ryze</option>
+            <option value='{"id":"Samira","name":"Samira","img":"Samira.png"}'>Samira</option>
+            <option value='{"id":"Sejuani","name":"Sejuani","img":"Sejuani.png"}'>Sejuani</option>
+            <option value='{"id":"Senna","name":"Senna","img":"Senna.png"}'>Senna</option>
+            <option value='{"id":"Seraphine","name":"Seraphine","img":"Seraphine.png"}'>Seraphine</option>
+            <option value='{"id":"Sett","name":"Sett","img":"Sett.png"}'>Sett</option>
+            <option value='{"id":"Shaco","name":"Shaco","img":"Shaco.png"}'>Shaco</option>
+            <option value='{"id":"Shen","name":"Shen","img":"Shen.png"}'>Shen</option>
+            <option value='{"id":"Shyvana","name":"Shyvana","img":"Shyvana.png"}'>Shyvana</option>
+            <option value='{"id":"Singed","name":"Singed","img":"Singed.png"}'>Singed</option>
+            <option value='{"id":"Sion","name":"Sion","img":"Sion.png"}'>Sion</option>
+            <option value='{"id":"Sivir","name":"Sivir","img":"Sivir.png"}'>Sivir</option>
+            <option value='{"id":"Skarner","name":"Skarner","img":"Skarner.png"}'>Skarner</option>
+            <option value='{"id":"Smolder","name":"Smolder","img":"Smolder.png"}'>Smolder</option>
+            <option value='{"id":"Sona","name":"Sona","img":"Sona.png"}'>Sona</option>
+            <option value='{"id":"Soraka","name":"Soraka","img":"Soraka.png"}'>Soraka</option>
+            <option value='{"id":"Swain","name":"Swain","img":"Swain.png"}'>Swain</option>
+            <option value='{"id":"Sylas","name":"Sylas","img":"Sylas.png"}'>Sylas</option>
+            <option value='{"id":"Syndra","name":"Syndra","img":"Syndra.png"}'>Syndra</option>
+            <option value='{"id":"TahmKench","name":"Tahm Kench","img":"TahmKench.png"}'>Tahm Kench</option>
+            <option value='{"id":"Taliyah","name":"Taliyah","img":"Taliyah.png"}'>Taliyah</option>
+            <option value='{"id":"Talon","name":"Talon","img":"Talon.png"}'>Talon</option>
+            <option value='{"id":"Taric","name":"Taric","img":"Taric.png"}'>Taric</option>
+            <option value='{"id":"Teemo","name":"Teemo","img":"Teemo.png"}'>Teemo</option>
+            <option value='{"id":"Thresh","name":"Thresh","img":"Thresh.png"}'>Thresh</option>
+            <option value='{"id":"Tristana","name":"Tristana","img":"Tristana.png"}'>Tristana</option>
+            <option value='{"id":"Trundle","name":"Trundle","img":"Trundle.png"}'>Trundle</option>
+            <option value='{"id":"Tryndamere","name":"Tryndamere","img":"Tryndamere.png"}'>Tryndamere</option>
+            <option value='{"id":"TwistedFate","name":"Twisted Fate","img":"TwistedFate.png"}'>Twisted Fate</option>
+            <option value='{"id":"Twitch","name":"Twitch","img":"Twitch.png"}'>Twitch</option>
+            <option value='{"id":"Udyr","name":"Udyr","img":"Udyr.png"}'>Udyr</option>
+            <option value='{"id":"Urgot","name":"Urgot","img":"Urgot.png"}'>Urgot</option>
+            <option value='{"id":"Varus","name":"Varus","img":"Varus.png"}'>Varus</option>
+            <option value='{"id":"Vayne","name":"Vayne","img":"Vayne.png"}'>Vayne</option>
+            <option value='{"id":"Veigar","name":"Veigar","img":"Veigar.png"}'>Veigar</option>
+            <option value='{"id":"Velkoz","name":"Vel'Koz","img":"Velkoz.png"}'>Vel'Koz</option>
+            <option value='{"id":"Vex","name":"Vex","img":"Vex.png"}'>Vex</option>
+            <option value='{"id":"Vi","name":"Vi","img":"Vi.png"}'>Vi</option>
+            <option value='{"id":"Viego","name":"Viego","img":"Viego.png"}'>Viego</option>
+            <option value='{"id":"Viktor","name":"Viktor","img":"Viktor.png"}'>Viktor</option>
+            <option value='{"id":"Vladimir","name":"Vladimir","img":"Vladimir.png"}'>Vladimir</option>
+            <option value='{"id":"Volibear","name":"Volibear","img":"Volibear.png"}'>Volibear</option>
+            <option value='{"id":"Warwick","name":"Warwick","img":"Warwick.png"}'>Warwick</option>
+            <option value='{"id":"Xayah","name":"Xayah","img":"Xayah.png"}'>Xayah</option>
+            <option value='{"id":"Xerath","name":"Xerath","img":"Xerath.png"}'>Xerath</option>
+            <option value='{"id":"XinZhao","name":"Xin Zhao","img":"XinZhao.png"}'>Xin Zhao</option>
+            <option value='{"id":"Yasuo","name":"Yasuo","img":"Yasuo.png"}'>Yasuo</option>
+            <option value='{"id":"Yone","name":"Yone","img":"Yone.png"}'>Yone</option>
+            <option value='{"id":"Yorick","name":"Yorick","img":"Yorick.png"}'>Yorick</option>
+            <option value='{"id":"Yunara","name":"Yunara","img":"Yunara.png"}'>Yunara</option>
+            <option value='{"id":"Yuumi","name":"Yuumi","img":"Yuumi.png"}'>Yuumi</option>
+            <option value='{"id":"Zaahen","name":"Zaahen","img":"Zaahen.png"}'>Zaahen</option>
+            <option value='{"id":"Zac","name":"Zac","img":"Zac.png"}'>Zac</option>
+            <option value='{"id":"Zed","name":"Zed","img":"Zed.png"}'>Zed</option>
+            <option value='{"id":"Zeri","name":"Zeri","img":"Zeri.png"}'>Zeri</option>
+            <option value='{"id":"Ziggs","name":"Ziggs","img":"Ziggs.png"}'>Ziggs</option>
+            <option value='{"id":"Zilean","name":"Zilean","img":"Zilean.png"}'>Zilean</option>
+            <option value='{"id":"Zoe","name":"Zoe","img":"Zoe.png"}'>Zoe</option>
+            <option value='{"id":"Zyra","name":"Zyra","img":"Zyra.png"}'>Zyra</option>
         </sdpi-select>
     </sdpi-item>
 </body>
