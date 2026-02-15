@@ -101,6 +101,36 @@
 			]
 		},
 		{
+			"Name": "Display W",
+			"UUID": "com.dt.spellcooldowns2.displayw",
+			"Icon": "imgs/actions/display-w/icon",
+			"Tooltip": "Display W ability for the current champion.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/display-w/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"Name": "Display E",
+			"UUID": "com.dt.spellcooldowns2.displaye",
+			"Icon": "imgs/actions/display-e/icon",
+			"Tooltip": "Display E ability for the current champion.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/display-e/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
 			"Name": "Display R",
 			"UUID": "com.dt.spellcooldowns2.displayr",
 			"Icon": "imgs/actions/display-r/icon",

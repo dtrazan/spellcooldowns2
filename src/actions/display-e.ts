@@ -4,28 +4,28 @@ import { GlobalSettingsManager, GlobalSettings } from "../global-settings";
 import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champion.json";
 
 /**
- * An action that displays the R ability cooldown for the current champion.
+ * An action that displays the E ability cooldown for the current champion.
  */
-@action({ UUID: "com.dt.spellcooldowns2.displayr" })
-export class DisplayR extends SingletonAction<DisplayRSettings> {
+@action({ UUID: "com.dt.spellcooldowns2.displaye" })
+export class DisplayE extends SingletonAction<DisplayESettings> {
 	private settingsListener?: any;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
 	 */
-	override async onWillAppear(ev: WillAppearEvent<DisplayRSettings>): Promise<void> {
-		await this.updateRDisplay(ev.action);
+	override async onWillAppear(ev: WillAppearEvent<DisplayESettings>): Promise<void> {
+		await this.updateEDisplay(ev.action);
 
 		// Listen for global settings changes to update when champion changes
 		this.settingsListener = streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((settingsEv) => {
-			this.updateRDisplay(ev.action);
+			this.updateEDisplay(ev.action);
 		});
 	}
 
 	/**
 	 * The {@link SingletonAction.onWillDisappear} event is called when the action is removed from view.
 	 */
-	override async onWillDisappear(ev: WillDisappearEvent<DisplayRSettings>): Promise<void> {
+	override async onWillDisappear(ev: WillDisappearEvent<DisplayESettings>): Promise<void> {
 		// Clean up the listener when the action is removed
 		if (this.settingsListener) {
 			this.settingsListener.dispose?.();
@@ -35,16 +35,16 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Updates the R ability cooldown display.
+	 * Updates the E ability cooldown display.
 	 */
-	override async onKeyDown(ev: KeyDownEvent<DisplayRSettings>): Promise<void> {
-		await this.updateRDisplay(ev.action);
+	override async onKeyDown(ev: KeyDownEvent<DisplayESettings>): Promise<void> {
+		await this.updateEDisplay(ev.action);
 	}
 
 	/**
-	 * Gets the current champion's R ability and updates the display.
+	 * Gets the current champion's E ability and updates the display.
 	 */
-	private async updateRDisplay(action: any): Promise<void> {
+	private async updateEDisplay(action: any): Promise<void> {
 		const manager = GlobalSettingsManager.getInstance();
 		const currentChampionId = manager.getCurrentChampion();
 
@@ -57,34 +57,34 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 		// Find the champion data
 		const champion = championData.find((c: any) => c.id === currentChampionId);
 		
-		if (!champion || !champion.r) {
+		if (!champion || !champion.e) {
 			await action.setTitle("No\nData");
 			await action.setImage(null);
 			return;
 		}
 
-		// Set the R ability image
-		await action.setImage(`imgs/spell/${champion.r.img}`);
+		// Set the E ability image
+		await action.setImage(`imgs/spell/${champion.e.img}`);
 		
-		// Get current R level
-		const rLevel = manager.getCurrentRLevel();
+		// Get current E level
+		const eLevel = manager.getCurrentELevel();
 		
 		// Display level and cooldown
-		if (rLevel === 0) {
+		if (eLevel === 0) {
 			await action.setTitle("Lvl 0");
-		} else if (rLevel > 0 && rLevel <= champion.r.cd.length) {
+		} else if (eLevel > 0 && eLevel <= champion.e.cd.length) {
 			// Get cooldown for current level (level 1 = index 0)
-			const cooldown = champion.r.cd[rLevel - 1];
-			await action.setTitle(`Lvl ${rLevel}\n${cooldown}s`);
+			const cooldown = champion.e.cd[eLevel - 1];
+			await action.setTitle(`Lvl ${eLevel}\n${cooldown}s`);
 		} else {
-			await action.setTitle(`Lvl ${rLevel}`);
+			await action.setTitle(`Lvl ${eLevel}`);
 		}
 	}
 }
 
 /**
- * Settings for {@link DisplayR}.
+ * Settings for {@link DisplayE}.
  */
-type DisplayRSettings = {
+type DisplayESettings = {
 	// Settings can be added here if needed in the future
 };

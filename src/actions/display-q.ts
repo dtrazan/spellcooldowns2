@@ -9,22 +9,16 @@ import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champio
 @action({ UUID: "com.dt.spellcooldowns2.displayq" })
 export class DisplayQ extends SingletonAction<DisplayQSettings> {
 	private settingsListener?: any;
-	private currentAction?: any;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
 	 */
 	override async onWillAppear(ev: WillAppearEvent<DisplayQSettings>): Promise<void> {
-		// Store the action reference
-		this.currentAction = ev.action;
-		
 		await this.updateQDisplay(ev.action);
 
 		// Listen for global settings changes to update when champion changes
 		this.settingsListener = streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((settingsEv) => {
-			if (this.currentAction) {
-				this.updateQDisplay(this.currentAction);
-			}
+			this.updateQDisplay(ev.action);
 		});
 	}
 
@@ -37,9 +31,6 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 			this.settingsListener.dispose?.();
 			this.settingsListener = undefined;
 		}
-		
-		// Clear the action reference
-		this.currentAction = undefined;
 	}
 
 	/**
