@@ -114,6 +114,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Increment Level",
+			"UUID": "com.dt.spellcooldowns2.incrementlevel",
+			"Icon": "imgs/actions/increment-level/icon",
+			"Tooltip": "Increment champion level (max 18).",
+			"PropertyInspectorPath": "ui/increment-level.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/increment-level/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",

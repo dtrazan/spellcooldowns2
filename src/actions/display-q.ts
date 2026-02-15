@@ -9,16 +9,22 @@ import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champio
 @action({ UUID: "com.dt.spellcooldowns2.displayq" })
 export class DisplayQ extends SingletonAction<DisplayQSettings> {
 	private settingsListener?: any;
+	private currentAction?: any;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
 	 */
 	override async onWillAppear(ev: WillAppearEvent<DisplayQSettings>): Promise<void> {
+		// Store the action reference
+		this.currentAction = ev.action;
+		
 		await this.updateQDisplay(ev.action);
 
 		// Listen for global settings changes to update when champion changes
 		this.settingsListener = streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((settingsEv) => {
-			this.updateQDisplay(ev.action);
+			if (this.currentAction) {
+				this.updateQDisplay(this.currentAction);
+			}
 		});
 	}
 
@@ -31,6 +37,9 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 			this.settingsListener.dispose?.();
 			this.settingsListener = undefined;
 		}
+		
+		// Clear the action reference
+		this.currentAction = undefined;
 	}
 
 	/**
@@ -66,8 +75,19 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 		// Set the Q ability image
 		await action.setImage(`imgs/spell/${champion.q.img}`);
 		
-		// Display the Q ability name
-		await action.setTitle(champion.q.name || "");
+		// Get current Q level
+		const qLevel = manager.getCurrentQLevel();
+		
+		// Display level and cooldown
+		if (qLevel === 0) {
+			await action.setTitle("Lvl 0");
+		} else if (qLevel > 0 && qLevel <= champion.q.cd.length) {
+			// Get cooldown for current level (level 1 = index 0)
+			const cooldown = champion.q.cd[qLevel - 1];
+			await action.setTitle(`Lvl ${qLevel}\n${cooldown}s`);
+		} else {
+			await action.setTitle(`Lvl ${qLevel}`);
+		}
 	}
 }
 

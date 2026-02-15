@@ -21,6 +21,7 @@ export interface GlobalSettings extends Record<string, any> {
 	itemsGrid?: (ItemData | null)[][];
 	gridRows?: number;
 	gridColumns?: number;
+	ability_matrix?: number[][];
 	current_basic_haste?: number;
 	current_ultimate_haste?: number;
 	has_cd_shard?: boolean;
@@ -28,6 +29,12 @@ export interface GlobalSettings extends Record<string, any> {
 	has_transcendence?: boolean;
 	has_legend_haste?: boolean;
 	current_champion?: string;
+	current_champion_level?: number;
+	current_q_level?: number;
+	current_w_level?: number;
+	current_e_level?: number;
+	current_r_level?: number;
+	latest_ability_leveled?: string;
 }
 
 /**
@@ -63,6 +70,12 @@ export class GlobalSettingsManager {
 			await this.saveSettings();
 		}
 
+		// Initialize default ability matrix if not exists (4 rows x 18 columns)
+		if (!this.settings.ability_matrix) {
+			this.settings.ability_matrix = this.createEmptyAbilityMatrix(4, 18);
+			await this.saveSettings();
+		}
+
 		// Initialize default haste values if not exists
 		if (this.settings.current_basic_haste === undefined) {
 			this.settings.current_basic_haste = 0;
@@ -85,6 +98,30 @@ export class GlobalSettingsManager {
 			this.settings.has_legend_haste = false;
 		}
 
+		// Initialize default champion level if not exists
+		if (this.settings.current_champion_level === undefined) {
+			this.settings.current_champion_level = 1;
+		}
+
+		// Initialize default ability levels if not exists
+		if (this.settings.current_q_level === undefined) {
+			this.settings.current_q_level = 0;
+		}
+		if (this.settings.current_w_level === undefined) {
+			this.settings.current_w_level = 0;
+		}
+		if (this.settings.current_e_level === undefined) {
+			this.settings.current_e_level = 0;
+		}
+		if (this.settings.current_r_level === undefined) {
+			this.settings.current_r_level = 0;
+		}
+
+		// Initialize latest ability leveled if not exists
+		if (this.settings.latest_ability_leveled === undefined) {
+			this.settings.latest_ability_leveled = "";
+		}
+
 		// Listen for global settings changes
 		streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((ev) => {
 			this.settings = ev.settings;
@@ -96,6 +133,13 @@ export class GlobalSettingsManager {
 	 */
 	private createEmptyGrid(rows: number, columns: number): (ItemData | null)[][] {
 		return Array.from({ length: rows }, () => Array(columns).fill(null));
+	}
+
+	/**
+	 * Creates an empty ability matrix (4 rows x 18 columns).
+	 */
+	private createEmptyAbilityMatrix(rows: number, columns: number): number[][] {
+		return Array.from({ length: rows }, () => Array(columns).fill(0));
 	}
 
 	/**
@@ -173,10 +217,78 @@ export class GlobalSettingsManager {
 	}
 
 	/**
-	 * Saves the current settings to global settings.
+	 * Gets the ability matrix.
+	 */
+	getAbilityMatrix(): number[][] {
+		return this.settings.ability_matrix || this.createEmptyAbilityMatrix(4, 18);
+	}
+
+	/**
+	 * Sets the entire ability matrix.
+	 * @param matrix A 4x18 matrix to set
+	 */
+	async setAbilityMatrix(matrix: number[][]): Promise<void> {
+		if (matrix.length === 4 && matrix.every(row => row.length === 18)) {
+			this.settings.ability_matrix = matrix;
+			await this.saveSettings();
+		} else {
+			console.error('Invalid ability matrix dimensions. Expected 4x18.');
+		}
+	}
+
+	/**
+	 * Gets a value from the ability matrix at a specific position.
+	 * @param row Row index (0-3): 0=Q, 1=W, 2=E, 3=R
+	 * @param column Column index (0-17): champion level - 1
+	 */
+	getAbilityMatrixValue(row: number, column: number): number {
+		const matrix = this.getAbilityMatrix();
+		if (row >= 0 && row < matrix.length && column >= 0 && column < matrix[row].length) {
+			return matrix[row][column];
+		}
+		return 0;
+	}
+
+	/**
+	 * Sets a value in the ability matrix at a specific position.
+	 * @param row Row index (0-3): 0=Q, 1=W, 2=E, 3=R
+	 * @param column Column index (0-17): champion level - 1
+	 * @param value Value to set (ability level)
+	 */
+	async setAbilityMatrixValue(row: number, column: number, value: number): Promise<void> {
+		const matrix = this.getAbilityMatrix();
+		
+		if (row >= 0 && row < matrix.length && column >= 0 && column < matrix[row].length) {
+			matrix[row][column] = value;
+			this.settings.ability_matrix = matrix;
+			await this.saveSettings();
+		}
+	}
+
+	/**
+	 * Clears a value in the ability matrix at a specific position.
+	 * @param row Row index (0-3): 0=Q, 1=W, 2=E, 3=R
+	 * @param column Column index (0-17): champion level - 1
+	 */
+	async clearAbilityMatrixValue(row: number, column: number): Promise<void> {
+		await this.setAbilityMatrixValue(row, column, 0);
+	}
+
+	/**
+	 * Resets the entire ability matrix to empty.
+	 */
+	async resetAbilityMatrix(): Promise<void> {
+		this.settings.ability_matrix = this.createEmptyAbilityMatrix(4, 18);
+		await this.saveSettings();
+	}
+
+	/**
+	 * Saves the current settings to global settings and notifies all listeners.
 	 */
 	private async saveSettings(): Promise<void> {
 		await streamDeck.settings.setGlobalSettings(this.settings);
+		// Request settings to trigger onDidReceiveGlobalSettings for all listening actions
+		await streamDeck.settings.getGlobalSettings();
 	}
 
 	/**
@@ -288,6 +400,99 @@ export class GlobalSettingsManager {
 	 */
 	async setCurrentChampion(value: string): Promise<void> {
 		this.settings.current_champion = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current champion level.
+	 */
+	getCurrentChampionLevel(): number {
+		const level = this.settings.current_champion_level ?? 1;
+		// Ensure it's a number (property inspector may store as string)
+		return typeof level === 'string' ? parseInt(level, 10) : level;
+	}
+
+	/**
+	 * Sets the current champion level.
+	 */
+	async setCurrentChampionLevel(value: number | string): Promise<void> {
+		// Ensure it's stored as a number
+		this.settings.current_champion_level = typeof value === 'string' ? parseInt(value, 10) : value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current Q ability level.
+	 */
+	getCurrentQLevel(): number {
+		return this.settings.current_q_level ?? 0;
+	}
+
+	/**
+	 * Sets the current Q ability level.
+	 */
+	async setCurrentQLevel(value: number): Promise<void> {
+		this.settings.current_q_level = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current W ability level.
+	 */
+	getCurrentWLevel(): number {
+		return this.settings.current_w_level ?? 0;
+	}
+
+	/**
+	 * Sets the current W ability level.
+	 */
+	async setCurrentWLevel(value: number): Promise<void> {
+		this.settings.current_w_level = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current E ability level.
+	 */
+	getCurrentELevel(): number {
+		return this.settings.current_e_level ?? 0;
+	}
+
+	/**
+	 * Sets the current E ability level.
+	 */
+	async setCurrentELevel(value: number): Promise<void> {
+		this.settings.current_e_level = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current R ability level.
+	 */
+	getCurrentRLevel(): number {
+		return this.settings.current_r_level ?? 0;
+	}
+
+	/**
+	 * Sets the current R ability level.
+	 */
+	async setCurrentRLevel(value: number): Promise<void> {
+		this.settings.current_r_level = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the latest ability that was leveled.
+	 */
+	getLatestAbilityLeveled(): string {
+		return this.settings.latest_ability_leveled ?? "";
+	}
+
+	/**
+	 * Sets the latest ability that was leveled.
+	 */
+	async setLatestAbilityLeveled(value: string): Promise<void> {
+		this.settings.latest_ability_leveled = value;
 		await this.saveSettings();
 	}
 }
