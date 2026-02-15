@@ -4,6 +4,9 @@ import { ToggleItem } from "./actions/toggle-item";
 import { DisplayHaste } from "./actions/display-haste";
 import { SetMastery } from "./actions/set-mastery";
 import { RotateChampion } from "./actions/champion-rotator";
+import { DisplayPassive } from "./actions/display-passive";
+import { DisplayQ } from "./actions/display-q";
+import { DisplayR } from "./actions/display-r";
 import { GlobalSettingsManager } from "./global-settings";
 
 // We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information
@@ -20,6 +23,15 @@ streamDeck.actions.registerAction(new SetMastery());
 
 // Register the rotate champion action.
 streamDeck.actions.registerAction(new RotateChampion());
+
+// Register the display passive action.
+streamDeck.actions.registerAction(new DisplayPassive());
+
+// Register the display Q action.
+streamDeck.actions.registerAction(new DisplayQ());
+
+// Register the display R action.
+streamDeck.actions.registerAction(new DisplayR());
 
 // Initialize global settings manager
 GlobalSettingsManager.getInstance().initialize();

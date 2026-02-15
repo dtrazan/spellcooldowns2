@@ -57,7 +57,7 @@
 		{
 			"Name": "Champion Rotator",
 			"UUID": "com.dt.spellcooldowns2.championrotator",
-			"Icon": "imgs/actions/rotate-champion/icon",
+			"Icon": "imgs/actions/champion-rotator/icon",
 			"Tooltip": "Rotate through League of Legends champions.",
 			"PropertyInspectorPath": "ui/champion-rotator.html",
 			"Controllers": [
@@ -67,6 +67,51 @@
 				{
 					"Image": "imgs/actions/champion-rotator/key",
 					"TitleAlignment": "bottom"
+				}
+			]
+		},
+		{
+			"Name": "Display Passive",
+			"UUID": "com.dt.spellcooldowns2.displaypassive",
+			"Icon": "imgs/actions/display-passive/icon",
+			"Tooltip": "Display passive ability cooldown for the current champion.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/display-passive/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"Name": "Display Q",
+			"UUID": "com.dt.spellcooldowns2.displayq",
+			"Icon": "imgs/actions/display-q/icon",
+			"Tooltip": "Display Q ability for the current champion.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/display-q/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"Name": "Display R",
+			"UUID": "com.dt.spellcooldowns2.displayr",
+			"Icon": "imgs/actions/display-r/icon",
+			"Tooltip": "Display R ability for the current champion.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/display-r/key",
+					"TitleAlignment": "middle"
 				}
 			]
 		}
