@@ -79,6 +79,10 @@
       "name": "Orb of Deception",
       "img": "AhriQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -99,6 +103,10 @@
       "name": "Charm",
       "img": "AhriE.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -130,6 +138,10 @@
       "name": "Five Point Strike",
       "img": "AkaliQ.png",
       "cd": [
+        1.5,
+        1.5,
+        1.5,
+        1.5,
         1.5
       ]
     },
@@ -374,6 +386,10 @@
       "name": "Despair",
       "img": "AuraofDespair.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -429,6 +445,10 @@
       "name": "Crystallize",
       "img": "Crystallize.png",
       "cd": [
+        17,
+        17,
+        17,
+        17,
         17
       ]
     },
@@ -437,6 +457,10 @@
       "name": "Frostbite",
       "img": "Frostbite.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -468,6 +492,10 @@
       "name": "Disintegrate",
       "img": "AnnieQ.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -476,6 +504,10 @@
       "name": "Incinerate",
       "img": "AnnieW.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -516,27 +548,42 @@
     },
     "q": {
       "id": "apheliosQ",
-      "name": "#N/A",
+      "name": null,
       "img": "ApheliosQ_ClientTooltipWrapper.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
-      ]
+      ],
+      "isVariable": true
     },
     "w": {
       "id": "apheliosW",
-      "name": "#N/A",
+      "name": null,
       "img": "ApheliosW.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
-      ]
+      ],
+      "isVariable": true
     },
     "e": {
       "id": "apheliosE",
-      "name": "#N/A",
+      "name": null,
       "img": "ApheliosE_ClientTooltipWrapper.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
-      ]
+      ],
+      "isVariable": true
     },
     "r": {
       "id": "apheliosR",
@@ -566,6 +613,10 @@
       "name": "Ranger's Focus",
       "img": "AsheQ.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -621,6 +672,10 @@
       "name": "Breath of Light",
       "img": "AurelionSolQ.png",
       "cd": [
+        3,
+        3,
+        3,
+        3,
         3
       ]
     },
@@ -641,6 +696,10 @@
       "name": "Singularity",
       "img": "AurelionSolE.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -802,6 +861,10 @@
       "name": "Caretaker's Shrine",
       "img": "BardW.png",
       "cd": [
+        18,
+        18,
+        18,
+        18,
         18
       ]
     },
@@ -881,6 +944,8 @@
       "name": "Endless Banquet",
       "img": "BelvethR.png",
       "cd": [
+        0,
+        0,
         0
       ]
     }
@@ -914,6 +979,10 @@
       "name": "Overdrive",
       "img": "Overdrive.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -1099,6 +1168,10 @@
       "name": "Chilling Scream",
       "img": "BriarE.png",
       "cd": [
+        16,
+        16,
+        16,
+        16,
         16
       ]
     },
@@ -1248,6 +1321,10 @@
       "name": "Noxious Blast",
       "img": "CassiopeiaQ.png",
       "cd": [
+        3.5,
+        3.5,
+        3.5,
+        3.5,
         3.5
       ]
     },
@@ -1268,6 +1345,10 @@
       "name": "Twin Fang",
       "img": "CassiopeiaE.png",
       "cd": [
+        0.75,
+        0.75,
+        0.75,
+        0.75,
         0.75
       ]
     },
@@ -1299,6 +1380,10 @@
       "name": "Rupture",
       "img": "Rupture.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -1378,6 +1463,10 @@
       "name": "Gatling Gun",
       "img": "GGun.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -1421,6 +1510,10 @@
       "name": "Crippling Strike",
       "img": "DariusNoxianTacticsONH.png",
       "cd": [
+        5,
+        5,
+        5,
+        5,
         5
       ]
     },
@@ -1535,6 +1628,10 @@
       "name": "Blood Rush",
       "img": "DravenFury.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -1578,6 +1675,10 @@
       "name": "Infected Bonesaw",
       "img": "DrMundoQ.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -1692,6 +1793,10 @@
       "name": "Neurotoxin",
       "img": "EliseHumanQ.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -1700,6 +1805,10 @@
       "name": "Volatile Spiderling",
       "img": "EliseHumanW.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -1720,6 +1829,8 @@
       "name": "Spider Form / Human Form",
       "img": "EliseR.png",
       "cd": [
+        0,
+        0,
         0
       ]
     }
@@ -1741,6 +1852,10 @@
       "name": "Hate Spike",
       "img": "EvelynnQ.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -1761,6 +1876,10 @@
       "name": "Whiplash",
       "img": "EvelynnE.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -1804,6 +1923,10 @@
       "name": "Essence Flux",
       "img": "EzrealW.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -2083,6 +2206,10 @@
       "name": "Parrrley",
       "img": "GangplankQWrapper.png",
       "cd": [
+        4.5,
+        4.5,
+        4.5,
+        4.5,
         4.5
       ]
     },
@@ -2138,6 +2265,10 @@
       "name": "Decisive Strike",
       "img": "GarenQ.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -2205,6 +2336,10 @@
       "name": "Hyper",
       "img": "GnarW.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -2260,6 +2395,10 @@
       "name": "Drunken Rage",
       "img": "GragasW.png",
       "cd": [
+        5,
+        5,
+        5,
+        5,
         5
       ]
     },
@@ -2424,6 +2563,7 @@
         4,
         3.25,
         2.5,
+        1.75,
         1.75
       ]
     },
@@ -2432,6 +2572,10 @@
       "name": "Spirit of Dread",
       "img": "HecarimW.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -2475,6 +2619,10 @@
       "name": "H-28G Evolution Turret",
       "img": "HeimerdingerQ.png",
       "cd": [
+        20,
+        20,
+        20,
+        20,
         20
       ]
     },
@@ -2495,6 +2643,10 @@
       "name": "CH-2 Electron Storm Grenade",
       "img": "HeimerdingerE.png",
       "cd": [
+        11,
+        11,
+        11,
+        11,
         11
       ]
     },
@@ -2597,6 +2749,10 @@
       "name": "Harsh Lesson?",
       "img": "IllaoiW.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -2711,6 +2867,10 @@
       "name": "Brushmaker",
       "img": "IvernW.png",
       "cd": [
+        20,
+        20,
+        20,
+        20,
         20
       ]
     },
@@ -2754,6 +2914,10 @@
       "name": "Howling Gale",
       "img": "HowlingGale.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -2821,6 +2985,10 @@
       "name": "Golden Aegis",
       "img": "JarvanIVGoldenAegis.png",
       "cd": [
+        9,
+        9,
+        9,
+        9,
         9
       ]
     },
@@ -2927,8 +3095,7 @@
         14,
         12,
         10,
-        8,
-        6
+        8
       ]
     },
     "w": {
@@ -2936,6 +3103,10 @@
       "name": "Lightning Field(hammer)",
       "img": "JayceStaticField.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -2948,8 +3119,7 @@
         18,
         16,
         14,
-        12,
-        10
+        12
       ]
     },
     "r": {
@@ -2957,6 +3127,8 @@
       "name": "Transform Mercury Cannon(hammer)",
       "img": "JayceStanceHtG.png",
       "cd": [
+        0,
+        0,
         0
       ]
     }
@@ -2990,6 +3162,10 @@
       "name": "Deadly Flourish",
       "img": "JhinW.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -3033,6 +3209,10 @@
       "name": "Switcheroo!",
       "img": "JinxQ.png",
       "cd": [
+        0.9,
+        0.9,
+        0.9,
+        0.9,
         0.9
       ]
     },
@@ -3147,6 +3327,10 @@
       "name": "Pierce",
       "img": "KaisaQ.png",
       "cd": [
+        9,
+        9,
+        9,
+        9,
         9
       ]
     },
@@ -3214,6 +3398,10 @@
       "name": "Focused Resolve",
       "img": "KalistaW.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -3257,6 +3445,10 @@
       "name": "Lay Waste",
       "img": "KarmaQ.png",
       "cd": [
+        1,
+        1,
+        1,
+        1,
         1
       ]
     },
@@ -3265,6 +3457,10 @@
       "name": "Wall of Pain",
       "img": "KarmaSpiritBind.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -3273,6 +3469,10 @@
       "name": "Defile",
       "img": "KarmaSolKimShield.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -3316,6 +3516,10 @@
       "name": "Nether Blade",
       "img": "KarthusWallOfPain.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -3430,6 +3634,10 @@
       "name": "Celestial Blessing",
       "img": "KatarinaW.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -3591,6 +3799,10 @@
       "name": "Taste Their Fear",
       "img": "KennenShurikenHurlMissile1.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -3599,6 +3811,10 @@
       "name": "Void Spike",
       "img": "KennenBringTheLight.png",
       "cd": [
+        9,
+        9,
+        9,
+        9,
         9
       ]
     },
@@ -3760,6 +3976,10 @@
       "name": "Caustic Spittle",
       "img": "KledQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -3768,6 +3988,10 @@
       "name": "Bio-Arcane Barrage",
       "img": "KledW.png",
       "cd": [
+        17,
+        17,
+        17,
+        17,
         17
       ]
     },
@@ -3776,6 +4000,10 @@
       "name": "Void Ooze",
       "img": "KledE.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -3811,8 +4039,7 @@
         3.2,
         2.9,
         2.6,
-        2.3,
-        2
+        2.3
       ]
     },
     "w": {
@@ -3867,6 +4094,10 @@
       "name": "Sigil of Malice",
       "img": "LeblancQ.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -3934,6 +4165,10 @@
       "name": "Safeguard",
       "img": "LeeSinWOne.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -3942,6 +4177,10 @@
       "name": "Tempest",
       "img": "LeeSinEOne.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -3973,6 +4212,10 @@
       "name": "Shield of Daybreak",
       "img": "LeonaShieldOfDaybreak.png",
       "cd": [
+        5,
+        5,
+        5,
+        5,
         5
       ]
     },
@@ -4052,6 +4295,10 @@
       "name": "Swirlseed",
       "img": "LilliaE.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -4201,6 +4448,10 @@
       "name": "Glitterlance",
       "img": "LuluQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -4209,6 +4460,10 @@
       "name": "Whimsy",
       "img": "LuluW.png",
       "cd": [
+        18,
+        18,
+        18,
+        18,
         18
       ]
     },
@@ -4311,6 +4566,10 @@
       "name": "Seismic Shard",
       "img": "SeismicShard.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -4331,6 +4590,10 @@
       "name": "Ground Slam",
       "img": "Landslide.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -4362,6 +4625,10 @@
       "name": "Call of the Void",
       "img": "MalzaharQ.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -4370,6 +4637,10 @@
       "name": "Void Swarm",
       "img": "MalzaharW.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -4484,6 +4755,10 @@
       "name": "Meditate",
       "img": "Meditate.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -4492,6 +4767,10 @@
       "name": "Wuju Style",
       "img": "WujuStyle.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -4582,6 +4861,10 @@
       "name": "Ultra Mega Fire Kick",
       "img": "MilioQ.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -4649,6 +4932,10 @@
       "name": "Strut",
       "img": "MissFortuneViciousStrikes.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -4810,6 +5097,10 @@
       "name": "Dark Binding",
       "img": "MorganaQ.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -4818,6 +5109,10 @@
       "name": "Tormented Shadow",
       "img": "MorganaW.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -4932,6 +5227,10 @@
       "name": "Ebb and Flow",
       "img": "NamiW.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -4940,6 +5239,10 @@
       "name": "Tidecaller's Blessing",
       "img": "NamiE.png",
       "cd": [
+        11,
+        11,
+        11,
+        11,
         11
       ]
     },
@@ -4995,6 +5298,10 @@
       "name": "Spirit Fire",
       "img": "NasusE.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -5038,6 +5345,10 @@
       "name": "Titan's Wrath",
       "img": "NautilusPiercingGaze.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -5140,6 +5451,10 @@
       "name": "Javelin Toss",
       "img": "JavelinToss.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -5160,6 +5475,10 @@
       "name": "Primal Surge",
       "img": "PrimalSurge.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -5191,6 +5510,10 @@
       "name": "Formless Blade",
       "img": "NilahQ.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -5246,6 +5569,10 @@
       "name": "Duskbringer",
       "img": "NocturneDuskbringer.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -5313,6 +5640,10 @@
       "name": "Biggest Snowball Ever!",
       "img": "NunuW.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -5356,6 +5687,10 @@
       "name": "Undertow",
       "img": "OlafAxeThrowCast.png",
       "cd": [
+        9,
+        9,
+        9,
+        9,
         9
       ]
     },
@@ -5423,6 +5758,10 @@
       "name": "Command: Dissonance",
       "img": "OrianaDissonanceCommand.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -5431,6 +5770,10 @@
       "name": "Command: Protect",
       "img": "OrianaRedactCommand.png",
       "cd": [
+        9,
+        9,
+        9,
+        9,
         9
       ]
     },
@@ -5698,6 +6041,10 @@
       "name": "Edge of Ixtal",
       "img": "QiyanaQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -5706,6 +6053,10 @@
       "name": "Terrashape",
       "img": "QiyanaW.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -5785,6 +6136,8 @@
       "name": "Behind Enemy Lines",
       "img": "QuinnR.png",
       "cd": [
+        0,
+        0,
         0
       ]
     }
@@ -5877,6 +6230,10 @@
       "name": "Defensive Ball Curl",
       "img": "DefensiveBallCurl.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -5885,6 +6242,10 @@
       "name": "Frenzying Taunt",
       "img": "PuncturingTaunt.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -5928,6 +6289,10 @@
       "name": "Burrow",
       "img": "RekSaiW.png",
       "cd": [
+        4,
+        4,
+        4,
+        4,
         4
       ]
     },
@@ -5936,6 +6301,10 @@
       "name": "Furious Bite",
       "img": "RekSaiE.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -5979,6 +6348,10 @@
       "name": "Ferromancy: Crash Down",
       "img": "RellW_Dismount.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -6022,6 +6395,10 @@
       "name": "Handshake",
       "img": "RenataQ.png",
       "cd": [
+        16,
+        16,
+        16,
+        16,
         16
       ]
     },
@@ -6077,6 +6454,10 @@
       "name": "Cull the Meek",
       "img": "RenektonCleave.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -6156,6 +6537,10 @@
       "name": "Bola Strike",
       "img": "RengarE.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -6187,6 +6572,10 @@
       "name": "Broken Wings",
       "img": "RivenTriCleave.png",
       "cd": [
+        13,
+        13,
+        13,
+        13,
         13
       ]
     },
@@ -6254,6 +6643,10 @@
       "name": "Scrap Shield",
       "img": "RumbleShield.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -6262,6 +6655,10 @@
       "name": "Electro Harpoon",
       "img": "RumbleGrenade.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -6293,6 +6690,10 @@
       "name": "Overload",
       "img": "RyzeQWrapper.png",
       "cd": [
+        5,
+        5,
+        5,
+        5,
         5
       ]
     },
@@ -6431,6 +6832,10 @@
       "name": "Permafrost",
       "img": "SejuaniE.png",
       "cd": [
+        1.5,
+        1.5,
+        1.5,
+        1.5,
         1.5
       ]
     },
@@ -6462,6 +6867,10 @@
       "name": "Piercing Darkness",
       "img": "SennaQ.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -6470,6 +6879,10 @@
       "name": "Last Embrace",
       "img": "SennaW.png",
       "cd": [
+        11,
+        11,
+        11,
+        11,
         11
       ]
     },
@@ -6525,6 +6938,10 @@
       "name": "Surround Sound",
       "img": "SeraphineW.png",
       "cd": [
+        22,
+        22,
+        22,
+        22,
         22
       ]
     },
@@ -6639,6 +7056,10 @@
       "name": "Jack in the Box",
       "img": "JackInTheBox.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -6647,6 +7068,10 @@
       "name": "Two-Shiv Poison",
       "img": "TwoShivPoison.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -6749,6 +7174,10 @@
       "name": "Burnout",
       "img": "ShyvanaImmolationAura.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -6769,6 +7198,8 @@
       "name": "Dragon's Descent",
       "img": "ShyvanaTransformCast.png",
       "cd": [
+        0,
+        0,
         0
       ]
     }
@@ -6790,6 +7221,10 @@
       "name": "Poison Trail",
       "img": "PoisonTrail.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -6916,6 +7351,10 @@
       "name": "Ricochet",
       "img": "SivirW.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -7077,6 +7516,10 @@
       "name": "Hymn of Valor",
       "img": "SonaQ.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -7085,6 +7528,10 @@
       "name": "Aria of Perseverance",
       "img": "SonaW.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -7093,6 +7540,10 @@
       "name": "Song of Celerity",
       "img": "SonaE.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -7301,6 +7752,10 @@
       "name": "Dark Sphere",
       "img": "SyndraQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -7321,6 +7776,10 @@
       "name": "Scatter the Weak",
       "img": "SyndraE.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -7376,6 +7835,10 @@
       "name": "Thick Skin",
       "img": "TahmKenchE.png",
       "cd": [
+        3,
+        3,
+        3,
+        3,
         3
       ]
     },
@@ -7431,6 +7894,10 @@
       "name": "Unraveled Earth",
       "img": "TaliyahE.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -7521,6 +7988,10 @@
       "name": "Starlight's Touch",
       "img": "TaricQ.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -7529,6 +8000,10 @@
       "name": "Bastion(active)",
       "img": "TaricW.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -7572,6 +8047,10 @@
       "name": "Blinding Dart",
       "img": "TeemoQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -7580,6 +8059,10 @@
       "name": "Move Quick",
       "img": "TeemoW.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -7588,6 +8071,10 @@
       "name": "Toxic Shot",
       "img": "TeemoE.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -7737,6 +8224,10 @@
       "name": "Chomp",
       "img": "TrundleTrollSmash.png",
       "cd": [
+        3.5,
+        3.5,
+        3.5,
+        3.5,
         3.5
       ]
     },
@@ -7792,6 +8283,10 @@
       "name": "Bloodlust",
       "img": "TryndamereQ.png",
       "cd": [
+        12,
+        12,
+        12,
+        12,
         12
       ]
     },
@@ -7800,6 +8295,10 @@
       "name": "Mocking Shout",
       "img": "TryndamereW.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -7855,6 +8354,10 @@
       "name": "Pick a Card",
       "img": "PickACard.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -7863,6 +8366,10 @@
       "name": "Stacked Deck",
       "img": "CardmasterStack.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -7894,6 +8401,10 @@
       "name": "Ambush",
       "img": "TwitchHideInShadows.png",
       "cd": [
+        16,
+        16,
+        16,
+        16,
         16
       ]
     },
@@ -7949,6 +8460,10 @@
       "name": "Wilding Claw",
       "img": "UdyrQ.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -7957,6 +8472,10 @@
       "name": "Iron Mantle",
       "img": "UdyrW.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -7965,6 +8484,10 @@
       "name": "Blazing Stampede",
       "img": "UdyrE.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -7973,6 +8496,8 @@
       "name": "Wingborne Storm",
       "img": "UdyrR.png",
       "cd": [
+        6,
+        6,
         6
       ]
     }
@@ -8065,6 +8590,10 @@
       "name": "Blighted Quiver",
       "img": "VarusW.png",
       "cd": [
+        40,
+        40,
+        40,
+        40,
         40
       ]
     },
@@ -8120,6 +8649,10 @@
       "name": "Silver Bolts",
       "img": "VayneSilveredBolts.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -8222,6 +8755,10 @@
       "name": "Plasma Fission",
       "img": "VelkozQ.png",
       "cd": [
+        7,
+        7,
+        7,
+        7,
         7
       ]
     },
@@ -8301,6 +8838,10 @@
       "name": "Looming Darkness",
       "img": "VexE.png",
       "cd": [
+        13,
+        13,
+        13,
+        13,
         13
       ]
     },
@@ -8344,6 +8885,10 @@
       "name": "Denting Blows",
       "img": "ViW.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -8399,6 +8944,10 @@
       "name": "Spectral Maw",
       "img": "ViegoW.png",
       "cd": [
+        8,
+        8,
+        8,
+        8,
         8
       ]
     },
@@ -8572,6 +9121,10 @@
       "name": "Frenzied Maul",
       "img": "VolibearW.png",
       "cd": [
+        5,
+        5,
+        5,
+        5,
         5
       ]
     },
@@ -8580,6 +9133,10 @@
       "name": "Sky Splitter",
       "img": "VolibearE.png",
       "cd": [
+        14,
+        14,
+        14,
+        14,
         14
       ]
     },
@@ -8812,6 +9369,10 @@
       "name": "Audacious Charge",
       "img": "XinZhaoE.png",
       "cd": [
+        11,
+        11,
+        11,
+        11,
         11
       ]
     },
@@ -9024,6 +9585,10 @@
       "name": "Cultivation of Spirit",
       "img": "YunaraQ.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -9032,6 +9597,10 @@
       "name": "Arc of Judgment",
       "img": "YunaraW.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -9040,6 +9609,10 @@
       "name": "Kanmei's Steps",
       "img": "YunaraE.png",
       "cd": [
+        9,
+        9,
+        9,
+        9,
         9
       ]
     },
@@ -9071,6 +9644,10 @@
       "name": "Prowling Projectile",
       "img": "YuumiQ.png",
       "cd": [
+        6.5,
+        6.5,
+        6.5,
+        6.5,
         6.5
       ]
     },
@@ -9079,6 +9656,10 @@
       "name": "You and Me!",
       "img": "YuumiW.png",
       "cd": [
+        36804,
+        36804,
+        36804,
+        36804,
         36804
       ]
     },
@@ -9087,6 +9668,10 @@
       "name": "Zoomies",
       "img": "YuumiE.png",
       "cd": [
+        10,
+        10,
+        10,
+        10,
         10
       ]
     },
@@ -9189,6 +9774,10 @@
       "name": "Unstable Matter",
       "img": "ZacW.png",
       "cd": [
+        5,
+        5,
+        5,
+        5,
         5
       ]
     },
@@ -9232,6 +9821,10 @@
       "name": "Razor Shuriken",
       "img": "ZedQ.png",
       "cd": [
+        6,
+        6,
+        6,
+        6,
         6
       ]
     },
@@ -9287,6 +9880,10 @@
       "name": "Burst Fire(AA)",
       "img": "ZeriQ.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -9366,6 +9963,10 @@
       "name": "Hexplosive Minefield",
       "img": "ZiggsE.png",
       "cd": [
+        16,
+        16,
+        16,
+        16,
         16
       ]
     },
@@ -9421,6 +10022,10 @@
       "name": "Time Warp",
       "img": "TimeWarp.png",
       "cd": [
+        15,
+        15,
+        15,
+        15,
         15
       ]
     },
@@ -9464,6 +10069,10 @@
       "name": "Spell Thief",
       "img": "ZoeW.png",
       "cd": [
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -9531,6 +10140,10 @@
       "name": "Grasping Roots",
       "img": "ZyraE.png",
       "cd": [
+        11,
+        11,
+        11,
+        11,
         11
       ]
     },
