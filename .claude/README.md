@@ -7,10 +7,11 @@ This directory contains context information for AI assistants working on the Spe
 ### 📋 [project-context.md](project-context.md)
 **Purpose**: High-level project overview  
 **Contains**:
-- Project goals and status
-- Current implementation summary
+- Project goals and current status
+- Complete action list (11 actions)
 - Technical architecture overview
-- Next development steps
+- Global Settings Manager explanation
+- Key design patterns
 - Build commands and dependencies
 
 **Read this first** for general project understanding.
@@ -20,13 +21,40 @@ This directory contains context information for AI assistants working on the Spe
 ### 🗂️ [codebase-structure.md](codebase-structure.md)
 **Purpose**: Directory layout and file organization  
 **Contains**:
-- Complete directory tree
+- Complete directory tree with all files
 - Key file descriptions
 - Action development patterns
 - Build process explanation
-- Settings persistence patterns
+- Settings persistence patterns (global + per-action)
+- Data files structure (champion.json, items.json)
 
 **Use this** to understand where files are located and how they're organized.
+
+---
+
+### 💻 [current-code-state.md](current-code-state.md)
+**Purpose**: Current state of all source code files  
+**Contains**:
+- Complete listing of src/plugin.ts
+- GlobalSettingsManager interface and methods
+- Summary of all 11 actions with code examples
+- Manifest.json structure
+- Implementation status checklist
+- Potential enhancements
+
+**Use this** to understand the current codebase without reading files.
+
+---
+
+### 📚 [documentation-summary.md](documentation-summary.md)
+**Purpose**: Overview of available documentation resources  
+**Contains**:
+- Documentation structure (knowledge-base, doc-site, rag-system)
+- Key examples with line numbers
+- Relevant patterns for implementation
+- Commands to access documentation
+
+**Use this** to find specific documentation or examples.
 
 ---
 
@@ -39,57 +67,49 @@ This directory contains context information for AI assistants working on the Spe
 - Settings type definitions
 - Feature implementation checklist
 
-**Use this** when implementing the cooldown timer functionality.
-
----
-
-### 📚 [documentation-summary.md](documentation-summary.md)
-**Purpose**: Overview of available documentation resources  
-**Contains**:
-- Documentation structure (knowledge-base, doc-site, rag-system)
-- Key examples with line numbers
-- Relevant patterns for timer implementation
-- Commands to access documentation
-
-**Use this** to find specific documentation or examples.
-
----
-
-### 💻 [current-code-state.md](current-code-state.md)
-**Purpose**: Current state of all source code files  
-**Contains**:
-- Complete listing of src/plugin.ts
-- Complete listing of src/actions/increment-counter.ts
-- Manifest.json structure
-- Missing functionality checklist
-- Next implementation tasks
-
-**Use this** to understand the current codebase without reading files.
+**Use this** when implementing real-time countdown timer functionality (future enhancement).
 
 ---
 
 ## Quick Reference
 
 ### Project Type
-Stream Deck Plugin using @elgato/streamdeck SDK v2.0.0
+Stream Deck Plugin for **League of Legends** using @elgato/streamdeck SDK v2.0.0
 
 ### Current Status
-✅ Basic counter action working  
-❌ Timer/cooldown functionality not implemented
+✅ Fully functional plugin with 11 actions  
+✅ Champion, ability, and item tracking implemented  
+✅ Global settings manager for shared state  
+✅ Haste calculation system  
+🔄 Real-time countdown timers not yet implemented (shows base cooldowns)
 
-### Main Task
-Implement spell cooldown timer that:
-- Counts down from configurable duration
-- Updates display every second
-- Alerts on completion
-- Handles multiple instances
-- Cleans up timers properly
+### Main Functionality
+The plugin provides:
+1. **Champion Selection** - Choose from multiple League champions
+2. **Ability Display** - Show Passive, Q, W, E, R abilities with icons and cooldowns
+3. **Item Management** - Toggle item activation for haste calculations
+4. **Stat Tracking** - Champion level, ability levels, mastery, rune stacks
+5. **Haste Calculation** - Total ability haste from items and runes
+
+### Complete Action List (11 total)
+1. **Champion Rotator** - Select/switch champions
+2. **Display Passive** - Show passive ability
+3. **Display Q** - Show Q ability
+4. **Display W** - Show W ability
+5. **Display E** - Show E ability
+6. **Display R** - Show R ability
+7. **Toggle Item** - Manage items and activation
+8. **Display Haste** - Show total ability haste
+9. **Set Mastery** - Configure mastery level
+10. **Increment Level** - Track champion level (1-18)
+11. **Increment Legend Stack** - Track Legend: Haste stacks (0-15)
 
 ### Key Technologies
 - TypeScript 5.2.2
 - Node.js 20
-- Rollup (bundler)
+- Rollup (bundler with JSON plugin)
 - Stream Deck SDK 2.0.0
+- Global Settings (Singleton pattern)
 
 ### Build Commands
 ```bash
@@ -98,6 +118,58 @@ npm run watch   # Watch mode with auto-restart
 ```
 
 ### Documentation Access
+```bash
+cd docs
+npm run ingest      # Build RAG vector database
+npm run test:query  # Test documentation queries
+npm run docs:start  # Start Docusaurus site (localhost:3000)
+```
+
+---
+
+## Implementation Patterns
+
+### Global State Management
+Use `GlobalSettingsManager.getInstance()` to access shared state:
+```typescript
+const manager = GlobalSettingsManager.getInstance();
+const champion = manager.getCurrentChampion();
+const level = manager.getCurrentChampionLevel();
+```
+
+### Listening for Global Changes
+```typescript
+this.settingsListener = streamDeck.settings.onDidReceiveGlobalSettings(() => {
+	// Update action display
+});
+```
+
+### Cleanup on Disappear
+```typescript
+override async onWillDisappear(ev: WillDisappearEvent): Promise<void> {
+	if (this.settingsListener) {
+		this.settingsListener.dispose?.();
+	}
+}
+```
+
+---
+
+## Data Files Location
+- **Champions**: `com.dt.spellcooldowns2.sdPlugin/champion/champion.json`
+- **Ability Orders**: `com.dt.spellcooldowns2.sdPlugin/champion/champion_ability_order.json`
+- **Masteries**: `com.dt.spellcooldowns2.sdPlugin/champion/mastery.json`
+- **Items**: `com.dt.spellcooldowns2.sdPlugin/items.json`
+
+---
+
+## Future Enhancements
+- Real-time countdown timers with `setInterval`
+- Cooldown reduction formula application (based on ability haste)
+- Timer start/stop/reset controls
+- Visual/audio alerts on cooldown completion
+- Advanced per-instance timer management
+
 ```bash
 npm run docs:start  # Start Docusaurus site (port 3000)
 npm run ingest      # Build RAG vector database

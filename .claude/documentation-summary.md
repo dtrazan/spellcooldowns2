@@ -9,7 +9,7 @@ The `docs/` folder contains comprehensive Stream Deck SDK documentation with 3 m
 **Core Concepts**
 - `architecture-overview.md` - Node.js runtime, WebSocket communication
 - `action-development.md` - Creating actions, event handlers
-- `settings-persistence.md` - Data storage patterns
+- `settings-persistence.md` - Data storage patterns (used in GlobalSettingsManager)
 - `communication-protocol.md` - Plugin ↔ UI messaging
 
 **Development Workflow**
@@ -19,26 +19,26 @@ The `docs/` folder contains comprehensive Stream Deck SDK documentation with 3 m
 - `testing-strategies.md` - Unit tests, mocking
 
 **Code Templates**
-- `action-templates.md` - Reusable action patterns
-- `common-patterns.md` - Best practices
-- `manifest-templates.md` - Manifest examples
-- `property-inspector-templates.md` - UI examples
+- `action-templates.md` - Reusable action patterns (similar to our 11 actions)
+- `common-patterns.md` - Best practices (Singleton pattern used in GlobalSettingsManager)
+- `manifest-templates.md` - Manifest examples (reference for our 11-action manifest)
+- `property-inspector-templates.md` - UI examples (reference for our 5 UI files)
 
 **Examples**
 - `basic-counter-plugin.md` - Complete counter example
 - `real-world-plugin-examples.md` - Advanced patterns including:
-  - Cat Keys (network requests, auto-update with setInterval)
-  - Hello World (internationalization)
-  - Data Sources (dynamic UI)
-  - Layouts (Stream Deck Plus)
-  - Lights Out (multi-action coordination)
+  - **Cat Keys** (network requests, auto-update with setInterval)
+  - **Hello World** (internationalization)
+  - **Data Sources** (dynamic UI)
+  - **Layouts** (Stream Deck Plus)
+  - **Lights Out** (multi-action coordination - similar to our multi-action setup)
 
 **UI Components**
-- `property-inspector-basics.md` - SDPI Components
+- `property-inspector-basics.md` - SDPI Components (used in our Property Inspectors)
 - `form-components.md` - Input elements, validation
 
 **Reference**
-- `api-reference.md` - Complete API docs
+- `api-reference.md` - Complete API docs (streamDeck object, SingletonAction methods)
 - `stream-deck-plus-deep-dive.md` - Dial and touchscreen features
 
 **Troubleshooting**
@@ -54,8 +54,11 @@ Interactive documentation site with:
 - Blog posts
 
 **Commands:**
-- `npm run docs:start` - Development server (http://localhost:3000)
-- `npm run docs:build` - Production build
+```bash
+cd docs/doc-site
+npm run docs:start  # Development server (http://localhost:3000)
+npm run docs:build  # Production build
+```
 
 ### 3. rag-system/ (AI Query System)
 
@@ -65,8 +68,79 @@ LlamaIndex-based RAG system for intelligent documentation queries:
 - MCP server for LLM integration
 
 **Commands:**
-- `npm run ingest` - Build vector database
-- `npm run test:query` - Test queries
+```bash
+cd docs
+npm run ingest       # Build vector database from markdown files
+npm run test:query   # Test documentation queries
+```
+
+---
+
+## Current Implementation: Documentation Applied
+
+### ✅ Patterns Already Implemented
+
+**1. Singleton Pattern** (from common-patterns.md)
+- `GlobalSettingsManager` uses singleton pattern for shared state
+- Used across all 11 actions
+
+**2. Event Listeners** (from action-development.md)
+- All display actions listen for global settings changes
+- Example: `streamDeck.settings.onDidReceiveGlobalSettings()`
+
+**3. Resource Cleanup** (from action-development.md)
+- Listeners disposed in `onWillDisappear` events
+- Prevents memory leaks across all actions
+
+**4. Settings Persistence** (from settings-persistence.md)
+- Global settings for champion, items, levels
+- Per-action settings for grid positions, UI preferences
+
+**5. Multi-Action Coordination** (from real-world-plugin-examples.md)
+- 11 actions share state via GlobalSettingsManager
+- Changes in one action trigger updates in others
+
+**6. Grid-Based Layout** 
+- Items mapped to physical Stream Deck positions
+- Row/column tracking for multi-button coordination
+
+### 🔄 Potential Future Enhancements
+
+Based on documentation patterns not yet implemented:
+
+**1. Real-Time Countdown Timers** (from Cat Keys example)
+Pattern for implementing active cooldown tracking:
+```typescript
+private timers = new Map<string, NodeJS.Timeout>();
+
+override onWillAppear(ev: WillAppearEvent): void {
+    // Start countdown timer
+    const timer = setInterval(() => {
+        this.updateCooldown(ev.action);
+    }, 1000);  // Update every second
+    this.timers.set(ev.action.id, timer);
+}
+
+override onWillDisappear(ev: WillDisappearEvent): void {
+    const timer = this.timers.get(ev.action.id);
+    if (timer) {
+        clearInterval(timer);
+        this.timers.delete(ev.action.id);
+    }
+}
+```
+
+**2. Visual Alerts** (from API reference)
+```typescript
+await ev.action.showOk();   // Show checkmark on completion
+await ev.action.showAlert(); // Show X on error
+```
+
+**3. Network Integration** (from Cat Keys example)
+- Fetch live game data from Riot API
+- Real-time champion/item stats
+
+---
 
 ## Relevant Examples for Timer Implementation
 
@@ -98,6 +172,57 @@ private longPressTimer?: NodeJS.Timeout;
 
 override async onKeyDown(ev: KeyDownEvent): Promise<void> {
     this.longPressTimer = setTimeout(async () => {
+        await this.resetCounter(ev.action);
+    }, 2000);  // 2 second long press
+}
+
+override async onKeyUp(ev: KeyUpEvent): Promise<void> {
+    if (this.longPressTimer) {
+        clearTimeout(this.longPressTimer);
+        this.longPressTimer = undefined;
+    }
+}
+```
+
+---
+
+## Documentation Search Tips
+
+**Find specific patterns:**
+```bash
+cd docs/knowledge-base
+grep -r "setInterval" .
+grep -r "clearInterval" .
+grep -r "setTimeout" .
+```
+
+**Search for examples:**
+- Timer patterns: `real-world-plugin-examples.md` (Cat Keys)
+- Multi-action: `real-world-plugin-examples.md` (Lights Out)
+- Settings: `settings-persistence.md`
+- WebSocket: `communication-protocol.md`
+
+**Access RAG system:**
+```bash
+cd docs
+npm run test:query
+# Then ask natural language questions about patterns
+```
+
+---
+
+## Key Documentation Files for Current Implementation
+
+| Topic | File | Relevance |
+|-------|------|-----------|
+| Action Lifecycle | `action-development.md` | Used in all 11 actions |
+| Global State | `settings-persistence.md` | Implemented in GlobalSettingsManager |
+| Multi-Action | `real-world-plugin-examples.md` | Our 11-action coordination |
+| UI Forms | `property-inspector-basics.md` | Our 5 Property Inspector files |
+| Singleton Pattern | `common-patterns.md` | GlobalSettingsManager |
+| Timer Patterns | `real-world-plugin-examples.md` | Future enhancement |
+| Cleanup | `action-development.md` | Listener disposal implemented |
+
         // Reset on long press
         await ev.action.setSettings({ count: 0 });
     }, 2000);
