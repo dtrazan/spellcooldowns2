@@ -18,6 +18,9 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 			await ev.action.setSettings({ championLevel: globalLevel });
 		}
 		
+		// Ensure Transcendence bonus is correct for current level
+		await this.updateTranscendenceBonus(globalLevel);
+		
 		// Update ability levels based on current champion level
 		await this.updateAbilityLevels(globalLevel);
 		
@@ -39,6 +42,9 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 			// Update global settings when property inspector changes
 			await manager.setCurrentChampionLevel(level);
 			
+			// Update Transcendence bonus based on level
+			await this.updateTranscendenceBonus(level);
+			
 			// Update ability levels based on ability matrix
 			await this.updateAbilityLevels(level);
 		}
@@ -58,6 +64,9 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 		// Increment level, wrapping from 18 to 1
 		const newLevel = currentLevel >= 18 ? 1 : currentLevel + 1;
 		await manager.setCurrentChampionLevel(newLevel);
+		
+		// Update Transcendence bonus based on level
+		await this.updateTranscendenceBonus(newLevel);
 		
 		// Update ability levels based on ability matrix
 		await this.updateAbilityLevels(newLevel);
@@ -90,6 +99,59 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 		await manager.setCurrentWLevel(wLevel);
 		await manager.setCurrentELevel(eLevel);
 		await manager.setCurrentRLevel(rLevel);
+	}
+
+	/**
+	 * Updates the Transcendence bonus based on champion level.
+	 * Levels 1-4: 0, Levels 5-7: 5, Levels 8-18: 10
+	 * @param level The champion level (1-18)
+	 */
+	private async updateTranscendenceBonus(level: number): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		
+		let bonus = 0;
+		if (level >= 1 && level <= 4) {
+			bonus = 0;
+		} else if (level >= 5 && level <= 7) {
+			bonus = 5;
+		} else if (level >= 8 && level <= 18) {
+			bonus = 10;
+		}
+		
+		await manager.setCdTranscendenceBonus(bonus);
+		
+		// Update mastery haste display after Transcendence bonus changes
+		await this.updateHasteDisplay();
+	}
+
+	/**
+	 * Updates the mastery haste calculation based on all active masteries.
+	 * This recalculates current_mastery_haste, current_basic_haste, and current_ultimate_haste.
+	 * Note: This might be unnecessary?
+	 */
+	private async updateHasteDisplay(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		
+		const oldMasteryHaste = manager.getCurrentMasteryHaste();
+		let masteryHaste = 0;
+		
+		if (manager.getHasCdShard()) {
+			masteryHaste += manager.getCdShardBonus();
+		}
+		if (manager.getHasTranscendence()) {
+			masteryHaste += manager.getCdTranscendenceBonus();
+		}
+		if (manager.getHasLegendHaste()) {
+			masteryHaste += manager.getCdLegendBonus();
+		}
+		
+		await manager.setCurrentMasteryHaste(masteryHaste);
+		
+		// Update current_basic_haste and current_ultimate_haste by adjusting for mastery haste change
+		const currentBasicHaste = manager.getCurrentBasicHaste();
+		const currentUltimateHaste = manager.getCurrentUltimateHaste();
+		await manager.setCurrentBasicHaste(currentBasicHaste - oldMasteryHaste + masteryHaste);
+		await manager.setCurrentUltimateHaste(currentUltimateHaste - oldMasteryHaste + masteryHaste);
 	}
 
 	/**

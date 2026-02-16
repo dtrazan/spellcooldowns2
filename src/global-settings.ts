@@ -31,6 +31,7 @@ export interface GlobalSettings extends Record<string, any> {
 	has_legend_haste?: boolean;
 	cd_shard_bonus?: number;
 	cd_legend_bonus?: number;
+	cd_transcendence_bonus?: number;
 	current_legend_stack?: number;
 	current_champion?: string;
 	current_champion_level?: number;
@@ -113,6 +114,10 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.cd_legend_bonus === undefined) {
 			this.settings.cd_legend_bonus = 0;
+			bonusValuesNeedSave = true;
+		}
+		if (this.settings.cd_transcendence_bonus === undefined) {
+			this.settings.cd_transcendence_bonus = 0;
 			bonusValuesNeedSave = true;
 		}
 		if (this.settings.current_legend_stacks === undefined) {
@@ -457,6 +462,21 @@ export class GlobalSettingsManager {
 	 */
 	async setCdLegendBonus(value: number): Promise<void> {
 		this.settings.cd_legend_bonus = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the CD Transcendence bonus value.
+	 */
+	getCdTranscendenceBonus(): number {
+		return this.settings.cd_transcendence_bonus ?? 0;
+	}
+
+	/**
+	 * Sets the CD Transcendence bonus value.
+	 */
+	async setCdTranscendenceBonus(value: number): Promise<void> {
+		this.settings.cd_transcendence_bonus = value;
 		await this.saveSettings();
 	}
 

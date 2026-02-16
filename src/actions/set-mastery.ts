@@ -170,6 +170,9 @@ export class SetMastery extends SingletonAction<SetMasterySettings> {
 			if (manager.getHasCdShard()) {
 				masteryHaste += manager.getCdShardBonus();
 			}
+			if (manager.getHasTranscendence()) {
+				masteryHaste += manager.getCdTranscendenceBonus();
+			}
 			if (manager.getHasLegendHaste()) {
 				masteryHaste += manager.getCdLegendBonus();
 			}
