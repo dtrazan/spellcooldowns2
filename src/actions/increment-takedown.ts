@@ -6,7 +6,7 @@ import { GlobalSettingsManager } from "../global-settings";
  */
 @action({ UUID: "com.dt.spellcooldowns2.incrementtakedown" })
 export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings> {
-	private static readonly MAX_TAKEDOWNS = 28;
+	private static readonly MAX_TAKEDOWNS = 10;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
@@ -19,6 +19,9 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		if (ev.payload.settings.takedownCount === undefined) {
 			await ev.action.setSettings({ takedownCount: globalTakedowns });
 		}
+		
+		// Update total legend stack
+		await this.updateTotalLegendStack();
 		
 		// Display the current takedown count
 		await this.updateDisplay(ev.action);
@@ -37,6 +40,9 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		if (count !== undefined && !isNaN(count) && count >= 0 && count <= IncrementTakedown.MAX_TAKEDOWNS) {
 			// Update global settings when property inspector changes
 			await manager.setCurrentTakedowns(count);
+			
+			// Update total legend stack
+			await this.updateTotalLegendStack();
 		}
 		
 		// Update display
@@ -55,11 +61,25 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		const newCount = currentCount >= IncrementTakedown.MAX_TAKEDOWNS ? 0 : currentCount + 1;
 		await manager.setCurrentTakedowns(newCount);
 		
+		// Update total legend stack
+		await this.updateTotalLegendStack();
+		
 		// Update the property inspector setting (as number)
 		await ev.action.setSettings({ takedownCount: newCount });
 		
 		// Update display
 		await this.updateDisplay(ev.action);
+	}
+
+	/**
+	 * Updates the total legend stack (current_takedowns + current_legend_stack).
+	 */
+	private async updateTotalLegendStack(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		const currentTakedowns = manager.getCurrentTakedowns();
+		const currentLegendStack = manager.getCurrentLegendStack();
+		const totalLegendStack = currentTakedowns + currentLegendStack;
+		await manager.setTotalLegendStack(totalLegendStack);
 	}
 
 	/**

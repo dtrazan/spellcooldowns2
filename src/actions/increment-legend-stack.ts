@@ -6,7 +6,7 @@ import { GlobalSettingsManager } from "../global-settings";
  */
 @action({ UUID: "com.dt.spellcooldowns2.incrementlegendstack" })
 export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSettings> {
-	private static readonly MAX_STACKS = 15;
+	private static readonly MAX_STACKS = 10;
 	private static readonly HASTE_PER_STACK = 1.5; // Adjust this value based on game mechanics
 
 	/**
@@ -20,6 +20,9 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 		if (ev.payload.settings.legendStacks === undefined) {
 			await ev.action.setSettings({ legendStacks: globalStacks });
 		}
+		
+		// Update total legend stack
+		await this.updateTotalLegendStack();
 		
 		// Display the current legend stacks
 		await this.updateStackDisplay(ev.action);
@@ -41,6 +44,9 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 			
 			// Update cd_legend_bonus based on stacks
 			await this.updateLegendBonus(stacks);
+			
+			// Update total legend stack
+			await this.updateTotalLegendStack();
 		}
 		
 		// Update display
@@ -49,21 +55,11 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Increments the legend stacks (max 15, then wraps to 0).
+	 * Key press functionality disabled - use Property Inspector to change stacks.
 	 */
 	override async onKeyDown(ev: KeyDownEvent<IncrementLegendStackSettings>): Promise<void> {
-		const manager = GlobalSettingsManager.getInstance();
-		const currentStacks = manager.getCurrentLegendStack();
-		
-		// Increment stacks, wrapping from MAX_STACKS to 0
-		const newStacks = currentStacks >= IncrementLegendStack.MAX_STACKS ? 0 : currentStacks + 1;
-		await manager.setCurrentLegendStack(newStacks);
-		
-		// Update cd_legend_bonus based on new stacks
-		await this.updateLegendBonus(newStacks);
-		
-		// Update the property inspector setting (as number)
-		await ev.action.setSettings({ legendStacks: newStacks });
+		// Increment functionality disabled - only update display
+		// Use Property Inspector to change legend stacks
 		
 		// Update display
 		await this.updateStackDisplay(ev.action);
@@ -105,6 +101,17 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 		const currentUltimateHaste = manager.getCurrentUltimateHaste();
 		await manager.setCurrentBasicHaste(currentBasicHaste - oldMasteryHaste + masteryHaste);
 		await manager.setCurrentUltimateHaste(currentUltimateHaste - oldMasteryHaste + masteryHaste);
+	}
+
+	/**
+	 * Updates the total legend stack (current_takedowns + current_legend_stack).
+	 */
+	private async updateTotalLegendStack(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		const currentTakedowns = manager.getCurrentTakedowns();
+		const currentLegendStack = manager.getCurrentLegendStack();
+		const totalLegendStack = currentTakedowns + currentLegendStack;
+		await manager.setTotalLegendStack(totalLegendStack);
 	}
 
 	/**
