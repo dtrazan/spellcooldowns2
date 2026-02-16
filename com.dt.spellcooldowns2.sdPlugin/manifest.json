@@ -96,7 +96,9 @@
 			"States": [
 				{
 					"Image": "imgs/actions/display-q/key",
-					"TitleAlignment": "middle"
+					"TitleAlignment": "middle",
+					"FontSize": 40,
+					"FontFamily": "Verdana"
 				}
 			]
 		},
@@ -111,7 +113,9 @@
 			"States": [
 				{
 					"Image": "imgs/actions/display-w/key",
-					"TitleAlignment": "middle"
+					"TitleAlignment": "middle",
+					"FontSize": 40,
+					"FontFamily": "Verdana"
 				}
 			]
 		},
@@ -126,7 +130,9 @@
 			"States": [
 				{
 					"Image": "imgs/actions/display-e/key",
-					"TitleAlignment": "middle"
+					"TitleAlignment": "middle",
+					"FontSize": 40,
+					"FontFamily": "Verdana"
 				}
 			]
 		},
@@ -142,7 +148,8 @@
 				{
 					"Image": "imgs/actions/display-r/key",
 					"TitleAlignment": "middle",
-					"FontSize": 30
+					"FontSize": 40,
+					"FontFamily": "Verdana"
 				}
 			]
 		},

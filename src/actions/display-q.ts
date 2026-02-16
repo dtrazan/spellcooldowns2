@@ -92,13 +92,20 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 			return;
 		}
 
+		// Get current Q level and reduced cooldown from global settings
+		const qLevel = manager.getCurrentQLevel();
+		const qCooldown = manager.getReducedQCooldown();
+
 		// Set the Q ability image
 		// Check if timer is active to determine which image to show
 		const timerEnd = manager.getTimerQEnd();
 		const now = Date.now();
 		const isTimerActive = timerEnd > now;
 		
-		if (isTimerActive) {
+		if (qLevel === 0) {
+			// Level 0 - show off image
+			await action.setImage(`imgs/off/${champion.q.img}`);
+		} else if (isTimerActive) {
 			// Timer active - show cooldown image
 			await action.setImage(`imgs/cd/${champion.q.img}`);
 		} else {
@@ -106,20 +113,16 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 			await action.setImage(`imgs/spell/${champion.q.img}`);
 		}
 		
-		// Get current Q level and reduced cooldown from global settings
-		const qLevel = manager.getCurrentQLevel();
-		const qCooldown = manager.getReducedQCooldown();
-		
 		if (isTimerActive) {
 			// Timer is active - show countdown
-			const remainingSeconds = (timerEnd - now) / 1000;
-			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
+			const remainingSeconds = Math.ceil((timerEnd - now) / 1000);
+			await action.setTitle(`${remainingSeconds}`);
 		} else {
 			// Timer expired or not started - show normal display
 			if (qLevel === 0) {
-				await action.setTitle("Lvl 0");
+				await action.setTitle("");
 			} else {
-				await action.setTitle(`Lvl ${qLevel}\n${qCooldown.toFixed(1)}s`);
+				await action.setTitle(`${Math.ceil(qCooldown)}`);
 			}
 		}
 	}

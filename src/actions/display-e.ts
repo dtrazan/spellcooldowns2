@@ -92,13 +92,20 @@ export class DisplayE extends SingletonAction<DisplayESettings> {
 			return;
 		}
 
+		// Get current E level and reduced cooldown from global settings
+		const eLevel = manager.getCurrentELevel();
+		const eCooldown = manager.getReducedECooldown();
+
 		// Set the E ability image
 		// Check if timer is active to determine which image to show
 		const timerEnd = manager.getTimerEEnd();
 		const now = Date.now();
 		const isTimerActive = timerEnd > now;
 		
-		if (isTimerActive) {
+		if (eLevel === 0) {
+			// Level 0 - show off image
+			await action.setImage(`imgs/off/${champion.e.img}`);
+		} else if (isTimerActive) {
 			// Timer active - show cooldown image
 			await action.setImage(`imgs/cd/${champion.e.img}`);
 		} else {
@@ -106,20 +113,16 @@ export class DisplayE extends SingletonAction<DisplayESettings> {
 			await action.setImage(`imgs/spell/${champion.e.img}`);
 		}
 		
-		// Get current E level and reduced cooldown from global settings
-		const eLevel = manager.getCurrentELevel();
-		const eCooldown = manager.getReducedECooldown();
-		
 		if (isTimerActive) {
 			// Timer is active - show countdown
-			const remainingSeconds = (timerEnd - now) / 1000;
-			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
+			const remainingSeconds = Math.ceil((timerEnd - now) / 1000);
+			await action.setTitle(`${remainingSeconds}`);
 		} else {
 			// Timer expired or not started - show normal display
 			if (eLevel === 0) {
-				await action.setTitle("Lvl 0");
+				await action.setTitle("");
 			} else {
-				await action.setTitle(`Lvl ${eLevel}\n${eCooldown.toFixed(1)}s`);
+				await action.setTitle(`${Math.ceil(eCooldown)}`);
 			}
 		}
 	}

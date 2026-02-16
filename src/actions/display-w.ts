@@ -92,13 +92,20 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 			return;
 		}
 
+		// Get current W level and reduced cooldown from global settings
+		const wLevel = manager.getCurrentWLevel();
+		const wCooldown = manager.getReducedWCooldown();
+
 		// Set the W ability image
 		// Check if timer is active to determine which image to show
 		const timerEnd = manager.getTimerWEnd();
 		const now = Date.now();
 		const isTimerActive = timerEnd > now;
 		
-		if (isTimerActive) {
+		if (wLevel === 0) {
+			// Level 0 - show off image
+			await action.setImage(`imgs/off/${champion.w.img}`);
+		} else if (isTimerActive) {
 			// Timer active - show cooldown image
 			await action.setImage(`imgs/cd/${champion.w.img}`);
 		} else {
@@ -106,20 +113,16 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 			await action.setImage(`imgs/spell/${champion.w.img}`);
 		}
 		
-		// Get current W level and reduced cooldown from global settings
-		const wLevel = manager.getCurrentWLevel();
-		const wCooldown = manager.getReducedWCooldown();
-		
 		if (isTimerActive) {
 			// Timer is active - show countdown
-			const remainingSeconds = (timerEnd - now) / 1000;
-			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
+			const remainingSeconds = Math.ceil((timerEnd - now) / 1000);
+			await action.setTitle(`${remainingSeconds}`);
 		} else {
 			// Timer expired or not started - show normal display
 			if (wLevel === 0) {
-				await action.setTitle("Lvl 0");
+				await action.setTitle("");
 			} else {
-				await action.setTitle(`Lvl ${wLevel}\n${wCooldown.toFixed(1)}s`);
+				await action.setTitle(`${Math.ceil(wCooldown)}`);
 			}
 		}
 	}
