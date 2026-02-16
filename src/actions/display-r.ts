@@ -66,18 +66,15 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 		// Set the R ability image
 		await action.setImage(`imgs/spell/${champion.r.img}`);
 		
-		// Get current R level
+		// Get current R level and cooldown from global settings
 		const rLevel = manager.getCurrentRLevel();
+		const rCooldown = manager.getCurrentRCooldown();
 		
 		// Display level and cooldown
 		if (rLevel === 0) {
 			await action.setTitle("Lvl 0");
-		} else if (rLevel > 0 && rLevel <= champion.r.cd.length) {
-			// Get cooldown for current level (level 1 = index 0)
-			const cooldown = champion.r.cd[rLevel - 1];
-			await action.setTitle(`Lvl ${rLevel}\n${cooldown}s`);
 		} else {
-			await action.setTitle(`Lvl ${rLevel}`);
+			await action.setTitle(`Lvl ${rLevel}\n${rCooldown}s`);
 		}
 	}
 }

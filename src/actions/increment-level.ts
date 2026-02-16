@@ -1,5 +1,6 @@
 import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 import { GlobalSettingsManager } from "../global-settings";
+import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champion.json";
 
 /**
  * An action that increments the champion level (max 18).
@@ -24,6 +25,9 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 		// Update ability levels based on current champion level
 		await this.updateAbilityLevels(globalLevel);
 		
+		// Update cooldowns based on ability levels
+		await this.updateCurrentCooldowns();
+		
 		// Display the current champion level
 		await this.updateLevelDisplay(ev.action);
 	}
@@ -47,6 +51,9 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 			
 			// Update ability levels based on ability matrix
 			await this.updateAbilityLevels(level);
+			
+			// Update cooldowns based on ability levels
+			await this.updateCurrentCooldowns();
 		}
 		
 		// Update display
@@ -70,6 +77,9 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 		
 		// Update ability levels based on ability matrix
 		await this.updateAbilityLevels(newLevel);
+		
+		// Update cooldowns based on ability levels
+		await this.updateCurrentCooldowns();
 		
 		// Update the property inspector setting (as number)
 		await ev.action.setSettings({ championLevel: newLevel });
@@ -152,6 +162,40 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 		const currentUltimateHaste = manager.getCurrentUltimateHaste();
 		await manager.setCurrentBasicHaste(currentBasicHaste - oldMasteryHaste + masteryHaste);
 		await manager.setCurrentUltimateHaste(currentUltimateHaste - oldMasteryHaste + masteryHaste);
+	}
+
+	/**
+	 * Updates current ability cooldowns based on champion data and ability levels.
+	 * Reads champion.json to get base cooldowns for Q, W, E, R at their respective levels.
+	 */
+	private async updateCurrentCooldowns(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		
+		// Get current champion and ability levels
+		const currentChampion = manager.getCurrentChampion();
+		if (!currentChampion) return;
+		
+		const qLevel = manager.getCurrentQLevel();
+		const wLevel = manager.getCurrentWLevel();
+		const eLevel = manager.getCurrentELevel();
+		const rLevel = manager.getCurrentRLevel();
+		
+		// Find champion in data
+		const champion = championData.find((champ: any) => champ.id === currentChampion);
+		if (!champion) return;
+		
+		// Get cooldowns from champion data (cd arrays are 0-indexed)
+		// Q/W/E have 5 levels (index 0-4), R has 3 levels (index 0-2)
+		const qCooldown = qLevel > 0 && champion.q?.cd ? champion.q.cd[qLevel - 1] : 0;
+		const wCooldown = wLevel > 0 && champion.w?.cd ? champion.w.cd[wLevel - 1] : 0;
+		const eCooldown = eLevel > 0 && champion.e?.cd ? champion.e.cd[eLevel - 1] : 0;
+		const rCooldown = rLevel > 0 && champion.r?.cd ? champion.r.cd[rLevel - 1] : 0;
+		
+		// Update global settings with cooldowns
+		await manager.setCurrentQCooldown(qCooldown);
+		await manager.setCurrentWCooldown(wCooldown);
+		await manager.setCurrentECooldown(eCooldown);
+		await manager.setCurrentRCooldown(rCooldown);
 	}
 
 	/**

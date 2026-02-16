@@ -66,18 +66,15 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 		// Set the W ability image
 		await action.setImage(`imgs/spell/${champion.w.img}`);
 		
-		// Get current W level
+		// Get current W level and cooldown from global settings
 		const wLevel = manager.getCurrentWLevel();
+		const wCooldown = manager.getCurrentWCooldown();
 		
 		// Display level and cooldown
 		if (wLevel === 0) {
 			await action.setTitle("Lvl 0");
-		} else if (wLevel > 0 && wLevel <= champion.w.cd.length) {
-			// Get cooldown for current level (level 1 = index 0)
-			const cooldown = champion.w.cd[wLevel - 1];
-			await action.setTitle(`Lvl ${wLevel}\n${cooldown}s`);
 		} else {
-			await action.setTitle(`Lvl ${wLevel}`);
+			await action.setTitle(`Lvl ${wLevel}\n${wCooldown}s`);
 		}
 	}
 }

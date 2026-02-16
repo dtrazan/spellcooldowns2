@@ -41,6 +41,14 @@ export interface GlobalSettings extends Record<string, any> {
 	current_w_level?: number;
 	current_e_level?: number;
 	current_r_level?: number;
+	current_q_cooldown?: number;
+	current_w_cooldown?: number;
+	current_e_cooldown?: number;
+	current_r_cooldown?: number;
+	reduced_q_cooldown?: number;
+	reduced_w_cooldown?: number;
+	reduced_e_cooldown?: number;
+	reduced_r_cooldown?: number;
 	latest_ability_leveled?: string;
 }
 
@@ -157,6 +165,34 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.current_r_level === undefined) {
 			this.settings.current_r_level = 0;
+		}
+
+		// Initialize default ability cooldowns if not exists
+		if (this.settings.current_q_cooldown === undefined) {
+			this.settings.current_q_cooldown = 0;
+		}
+		if (this.settings.current_w_cooldown === undefined) {
+			this.settings.current_w_cooldown = 0;
+		}
+		if (this.settings.current_e_cooldown === undefined) {
+			this.settings.current_e_cooldown = 0;
+		}
+		if (this.settings.current_r_cooldown === undefined) {
+			this.settings.current_r_cooldown = 0;
+		}
+
+		// Initialize default reduced ability cooldowns if not exists
+		if (this.settings.reduced_q_cooldown === undefined) {
+			this.settings.reduced_q_cooldown = 0;
+		}
+		if (this.settings.reduced_w_cooldown === undefined) {
+			this.settings.reduced_w_cooldown = 0;
+		}
+		if (this.settings.reduced_e_cooldown === undefined) {
+			this.settings.reduced_e_cooldown = 0;
+		}
+		if (this.settings.reduced_r_cooldown === undefined) {
+			this.settings.reduced_r_cooldown = 0;
 		}
 
 		// Initialize latest ability leveled if not exists
@@ -625,6 +661,126 @@ export class GlobalSettingsManager {
 	 */
 	async setCurrentRLevel(value: number): Promise<void> {
 		this.settings.current_r_level = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current Q ability cooldown.
+	 */
+	getCurrentQCooldown(): number {
+		return this.settings.current_q_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the current Q ability cooldown.
+	 */
+	async setCurrentQCooldown(value: number): Promise<void> {
+		this.settings.current_q_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current W ability cooldown.
+	 */
+	getCurrentWCooldown(): number {
+		return this.settings.current_w_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the current W ability cooldown.
+	 */
+	async setCurrentWCooldown(value: number): Promise<void> {
+		this.settings.current_w_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current E ability cooldown.
+	 */
+	getCurrentECooldown(): number {
+		return this.settings.current_e_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the current E ability cooldown.
+	 */
+	async setCurrentECooldown(value: number): Promise<void> {
+		this.settings.current_e_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current R ability cooldown.
+	 */
+	getCurrentRCooldown(): number {
+		return this.settings.current_r_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the current R ability cooldown.
+	 */
+	async setCurrentRCooldown(value: number): Promise<void> {
+		this.settings.current_r_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the reduced Q ability cooldown.
+	 */
+	getReducedQCooldown(): number {
+		return this.settings.reduced_q_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the reduced Q ability cooldown.
+	 */
+	async setReducedQCooldown(value: number): Promise<void> {
+		this.settings.reduced_q_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the reduced W ability cooldown.
+	 */
+	getReducedWCooldown(): number {
+		return this.settings.reduced_w_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the reduced W ability cooldown.
+	 */
+	async setReducedWCooldown(value: number): Promise<void> {
+		this.settings.reduced_w_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the reduced E ability cooldown.
+	 */
+	getReducedECooldown(): number {
+		return this.settings.reduced_e_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the reduced E ability cooldown.
+	 */
+	async setReducedECooldown(value: number): Promise<void> {
+		this.settings.reduced_e_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the reduced R ability cooldown.
+	 */
+	getReducedRCooldown(): number {
+		return this.settings.reduced_r_cooldown ?? 0;
+	}
+
+	/**
+	 * Sets the reduced R ability cooldown.
+	 */
+	async setReducedRCooldown(value: number): Promise<void> {
+		this.settings.reduced_r_cooldown = value;
 		await this.saveSettings();
 	}
 
