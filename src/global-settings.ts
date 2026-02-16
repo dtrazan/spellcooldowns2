@@ -33,6 +33,7 @@ export interface GlobalSettings extends Record<string, any> {
 	cd_legend_bonus?: number;
 	cd_transcendence_bonus?: number;
 	current_legend_stack?: number;
+	current_takedowns?: number;
 	current_champion?: string;
 	current_champion_level?: number;
 	current_q_level?: number;
@@ -122,6 +123,10 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.current_legend_stacks === undefined) {
 			this.settings.current_legend_stacks = 0;
+			bonusValuesNeedSave = true;
+		}
+		if (this.settings.current_takedowns === undefined) {
+			this.settings.current_takedowns = 0;
 			bonusValuesNeedSave = true;
 		}
 
@@ -492,6 +497,21 @@ export class GlobalSettingsManager {
 	 */
 	async setCurrentLegendStack(value: number): Promise<void> {
 		this.settings.current_legend_stack = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the current takedowns value.
+	 */
+	getCurrentTakedowns(): number {
+		return this.settings.current_takedowns ?? 0;
+	}
+
+	/**
+	 * Sets the current takedowns value.
+	 */
+	async setCurrentTakedowns(value: number): Promise<void> {
+		this.settings.current_takedowns = value;
 		await this.saveSettings();
 	}
 

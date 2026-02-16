@@ -182,6 +182,7 @@
 			"UUID": "com.dt.spellcooldowns2.incrementtakedown",
 			"Icon": "imgs/actions/increment-takedown/icon",
 			"Tooltip": "Increment takedown count.",
+			"PropertyInspectorPath": "ui/increment-takedown.html",
 			"Controllers": [
 				"Keypad"
 			],
