@@ -1,5 +1,6 @@
 import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 import { GlobalSettingsManager } from "../global-settings";
+import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champion.json";
 
 /**
  * An action that displays the total ability haste from all activated items in the grid.
@@ -81,10 +82,56 @@ export class DisplayHaste extends SingletonAction<DisplayHasteSettings> {
 		await manager.setCurrentBasicHaste(currentBasicHaste);
 		await manager.setCurrentUltimateHaste(currentUltimateHaste);
 
+		// Recalculate reduced cooldowns with new haste values
+		await this.updateReducedCooldowns();
+
 		// Display basic haste and ultimate haste from global settings
 		const basicHaste = manager.getCurrentBasicHaste();
 		const ultimateHaste = manager.getCurrentUltimateHaste();
 		await action.setTitle(`${basicHaste}\n${ultimateHaste}`);
+	}
+
+	/**
+	 * Recalculates reduced cooldowns based on current haste and base cooldowns.
+	 */
+	private async updateReducedCooldowns(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		
+		// Get current champion
+		const currentChampion = manager.getCurrentChampion();
+		if (!currentChampion) return;
+		
+		// Get ability levels
+		const qLevel = manager.getCurrentQLevel();
+		const wLevel = manager.getCurrentWLevel();
+		const eLevel = manager.getCurrentELevel();
+		const rLevel = manager.getCurrentRLevel();
+		
+		// Find champion in data
+		const champion = championData.find((champ: any) => champ.id === currentChampion);
+		if (!champion) return;
+		
+		// Get base cooldowns from champion data
+		const qCooldown = qLevel > 0 && champion.q?.cd ? champion.q.cd[qLevel - 1] : 0;
+		const wCooldown = wLevel > 0 && champion.w?.cd ? champion.w.cd[wLevel - 1] : 0;
+		const eCooldown = eLevel > 0 && champion.e?.cd ? champion.e.cd[eLevel - 1] : 0;
+		const rCooldown = rLevel > 0 && champion.r?.cd ? champion.r.cd[rLevel - 1] : 0;
+		
+		// Get current haste values
+		const currentBasicHaste = manager.getCurrentBasicHaste();
+		const currentUltimateHaste = manager.getCurrentUltimateHaste();
+		
+		// Calculate reduced cooldowns using ability haste formula
+		const reducedQCooldown = qCooldown * (100 / (100 + currentBasicHaste));
+		const reducedWCooldown = wCooldown * (100 / (100 + currentBasicHaste));
+		const reducedECooldown = eCooldown * (100 / (100 + currentBasicHaste));
+		const reducedRCooldown = rCooldown * (100 / (100 + currentUltimateHaste));
+		
+		// Update global settings with reduced cooldowns
+		await manager.setReducedQCooldown(reducedQCooldown);
+		await manager.setReducedWCooldown(reducedWCooldown);
+		await manager.setReducedECooldown(reducedECooldown);
+		await manager.setReducedRCooldown(reducedRCooldown);
 	}
 }
 

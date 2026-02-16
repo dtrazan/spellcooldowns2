@@ -49,6 +49,10 @@ export interface GlobalSettings extends Record<string, any> {
 	reduced_w_cooldown?: number;
 	reduced_e_cooldown?: number;
 	reduced_r_cooldown?: number;
+	timer_q_end?: number;
+	timer_w_end?: number;
+	timer_e_end?: number;
+	timer_r_end?: number;
 	latest_ability_leveled?: string;
 }
 
@@ -193,6 +197,20 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.reduced_r_cooldown === undefined) {
 			this.settings.reduced_r_cooldown = 0;
+		}
+
+		// Initialize default timer end timestamps if not exists
+		if (this.settings.timer_q_end === undefined) {
+			this.settings.timer_q_end = 0;
+		}
+		if (this.settings.timer_w_end === undefined) {
+			this.settings.timer_w_end = 0;
+		}
+		if (this.settings.timer_e_end === undefined) {
+			this.settings.timer_e_end = 0;
+		}
+		if (this.settings.timer_r_end === undefined) {
+			this.settings.timer_r_end = 0;
 		}
 
 		// Initialize latest ability leveled if not exists
@@ -781,6 +799,66 @@ export class GlobalSettingsManager {
 	 */
 	async setReducedRCooldown(value: number): Promise<void> {
 		this.settings.reduced_r_cooldown = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the Q timer end timestamp.
+	 */
+	getTimerQEnd(): number {
+		return this.settings.timer_q_end ?? 0;
+	}
+
+	/**
+	 * Sets the Q timer end timestamp.
+	 */
+	async setTimerQEnd(value: number): Promise<void> {
+		this.settings.timer_q_end = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the W timer end timestamp.
+	 */
+	getTimerWEnd(): number {
+		return this.settings.timer_w_end ?? 0;
+	}
+
+	/**
+	 * Sets the W timer end timestamp.
+	 */
+	async setTimerWEnd(value: number): Promise<void> {
+		this.settings.timer_w_end = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the E timer end timestamp.
+	 */
+	getTimerEEnd(): number {
+		return this.settings.timer_e_end ?? 0;
+	}
+
+	/**
+	 * Sets the E timer end timestamp.
+	 */
+	async setTimerEEnd(value: number): Promise<void> {
+		this.settings.timer_e_end = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the R timer end timestamp.
+	 */
+	getTimerREnd(): number {
+		return this.settings.timer_r_end ?? 0;
+	}
+
+	/**
+	 * Sets the R timer end timestamp.
+	 */
+	async setTimerREnd(value: number): Promise<void> {
+		this.settings.timer_r_end = value;
 		await this.saveSettings();
 	}
 

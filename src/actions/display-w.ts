@@ -9,6 +9,7 @@ import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champio
 @action({ UUID: "com.dt.spellcooldowns2.displayw" })
 export class DisplayW extends SingletonAction<DisplayWSettings> {
 	private settingsListener?: any;
+	private updateInterval?: NodeJS.Timeout;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
@@ -20,6 +21,11 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 		this.settingsListener = streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((settingsEv) => {
 			this.updateWDisplay(ev.action);
 		});
+
+		// Start interval to update timer display every 100ms
+		this.updateInterval = setInterval(() => {
+			this.updateWDisplay(ev.action);
+		}, 100);
 	}
 
 	/**
@@ -31,13 +37,36 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 			this.settingsListener.dispose?.();
 			this.settingsListener = undefined;
 		}
+
+		// Clear the update interval
+		if (this.updateInterval) {
+			clearInterval(this.updateInterval);
+			this.updateInterval = undefined;
+		}
 	}
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Updates the W ability cooldown display.
+	 * Starts the cooldown timer for W ability, or resets it if already running.
 	 */
 	override async onKeyDown(ev: KeyDownEvent<DisplayWSettings>): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		
+		// Check if timer is already running
+		const currentTimerEnd = manager.getTimerWEnd();
+		const now = Date.now();
+		
+		if (currentTimerEnd > now) {
+			// Timer is running - reset it to 0
+			await manager.setTimerWEnd(0);
+		} else {
+			// Timer not running - start it
+			const wCooldown = manager.getReducedWCooldown();
+			const timerEnd = now + (wCooldown * 1000);
+			await manager.setTimerWEnd(timerEnd);
+		}
+		
+		// Update display immediately
 		await this.updateWDisplay(ev.action);
 	}
 
@@ -70,11 +99,21 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 		const wLevel = manager.getCurrentWLevel();
 		const wCooldown = manager.getReducedWCooldown();
 		
-		// Display level and cooldown
-		if (wLevel === 0) {
-			await action.setTitle("Lvl 0");
+		// Check if timer is active
+		const timerEnd = manager.getTimerWEnd();
+		const now = Date.now();
+		
+		if (timerEnd > now) {
+			// Timer is active - show countdown
+			const remainingSeconds = (timerEnd - now) / 1000;
+			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
 		} else {
-			await action.setTitle(`Lvl ${wLevel}\n${wCooldown.toFixed(1)}s`);
+			// Timer expired or not started - show normal display
+			if (wLevel === 0) {
+				await action.setTitle("Lvl 0");
+			} else {
+				await action.setTitle(`Lvl ${wLevel}\n${wCooldown.toFixed(1)}s`);
+			}
 		}
 	}
 }

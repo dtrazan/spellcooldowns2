@@ -9,6 +9,7 @@ import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champio
 @action({ UUID: "com.dt.spellcooldowns2.displayr" })
 export class DisplayR extends SingletonAction<DisplayRSettings> {
 	private settingsListener?: any;
+	private updateInterval?: NodeJS.Timeout;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
@@ -20,6 +21,11 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 		this.settingsListener = streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((settingsEv) => {
 			this.updateRDisplay(ev.action);
 		});
+
+		// Start interval to update timer display every 100ms
+		this.updateInterval = setInterval(() => {
+			this.updateRDisplay(ev.action);
+		}, 100);
 	}
 
 	/**
@@ -31,13 +37,36 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 			this.settingsListener.dispose?.();
 			this.settingsListener = undefined;
 		}
+
+		// Clear the update interval
+		if (this.updateInterval) {
+			clearInterval(this.updateInterval);
+			this.updateInterval = undefined;
+		}
 	}
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Updates the R ability cooldown display.
+	 * Starts the cooldown timer for R ability, or resets it if already running.
 	 */
 	override async onKeyDown(ev: KeyDownEvent<DisplayRSettings>): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		
+		// Check if timer is already running
+		const currentTimerEnd = manager.getTimerREnd();
+		const now = Date.now();
+		
+		if (currentTimerEnd > now) {
+			// Timer is running - reset it to 0
+			await manager.setTimerREnd(0);
+		} else {
+			// Timer not running - start it
+			const rCooldown = manager.getReducedRCooldown();
+			const timerEnd = now + (rCooldown * 1000);
+			await manager.setTimerREnd(timerEnd);
+		}
+		
+		// Update display immediately
 		await this.updateRDisplay(ev.action);
 	}
 
@@ -70,11 +99,21 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 		const rLevel = manager.getCurrentRLevel();
 		const rCooldown = manager.getReducedRCooldown();
 		
-		// Display level and cooldown
-		if (rLevel === 0) {
-			await action.setTitle("Lvl 0");
+		// Check if timer is active
+		const timerEnd = manager.getTimerREnd();
+		const now = Date.now();
+		
+		if (timerEnd > now) {
+			// Timer is active - show countdown
+			const remainingSeconds = (timerEnd - now) / 1000;
+			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
 		} else {
-			await action.setTitle(`Lvl ${rLevel}\n${rCooldown.toFixed(1)}s`);
+			// Timer expired or not started - show normal display
+			if (rLevel === 0) {
+				await action.setTitle("Lvl 0");
+			} else {
+				await action.setTitle(`Lvl ${rLevel}\n${rCooldown.toFixed(1)}s`);
+			}
 		}
 	}
 }
