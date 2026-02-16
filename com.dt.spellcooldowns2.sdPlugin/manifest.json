@@ -176,6 +176,21 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Increment Takedown",
+			"UUID": "com.dt.spellcooldowns2.incrementtakedown",
+			"Icon": "imgs/actions/increment-takedown/icon",
+			"Tooltip": "Increment takedown count.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/increment-takedown/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",
