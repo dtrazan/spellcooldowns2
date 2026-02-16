@@ -141,7 +141,8 @@
 			"States": [
 				{
 					"Image": "imgs/actions/display-r/key",
-					"TitleAlignment": "middle"
+					"TitleAlignment": "middle",
+					"FontSize": 30
 				}
 			]
 		},

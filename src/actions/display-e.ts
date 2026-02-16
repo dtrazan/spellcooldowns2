@@ -93,17 +93,24 @@ export class DisplayE extends SingletonAction<DisplayESettings> {
 		}
 
 		// Set the E ability image
-		await action.setImage(`imgs/spell/${champion.e.img}`);
+		// Check if timer is active to determine which image to show
+		const timerEnd = manager.getTimerEEnd();
+		const now = Date.now();
+		const isTimerActive = timerEnd > now;
+		
+		if (isTimerActive) {
+			// Timer active - show cooldown image
+			await action.setImage(`imgs/cd/${champion.e.img}`);
+		} else {
+			// Timer not active - show normal image
+			await action.setImage(`imgs/spell/${champion.e.img}`);
+		}
 		
 		// Get current E level and reduced cooldown from global settings
 		const eLevel = manager.getCurrentELevel();
 		const eCooldown = manager.getReducedECooldown();
 		
-		// Check if timer is active
-		const timerEnd = manager.getTimerEEnd();
-		const now = Date.now();
-		
-		if (timerEnd > now) {
+		if (isTimerActive) {
 			// Timer is active - show countdown
 			const remainingSeconds = (timerEnd - now) / 1000;
 			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);

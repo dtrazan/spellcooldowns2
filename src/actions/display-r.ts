@@ -93,26 +93,33 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 		}
 
 		// Set the R ability image
-		await action.setImage(`imgs/spell/${champion.r.img}`);
+		// Check if timer is active to determine which image to show
+		const timerEnd = manager.getTimerREnd();
+		const now = Date.now();
+		const isTimerActive = timerEnd > now;
+		
+		if (isTimerActive) {
+			// Timer active - show cooldown image
+			await action.setImage(`imgs/cd/${champion.r.img}`);
+		} else {
+			// Timer not active - show normal image
+			await action.setImage(`imgs/spell/${champion.r.img}`);
+		}
 		
 		// Get current R level and reduced cooldown from global settings
 		const rLevel = manager.getCurrentRLevel();
 		const rCooldown = manager.getReducedRCooldown();
 		
-		// Check if timer is active
-		const timerEnd = manager.getTimerREnd();
-		const now = Date.now();
-		
-		if (timerEnd > now) {
+		if (isTimerActive) {
 			// Timer is active - show countdown
-			const remainingSeconds = (timerEnd - now) / 1000;
-			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
+			const remainingSeconds = Math.ceil((timerEnd - now) / 1000);
+			await action.setTitle(`${remainingSeconds}`);
 		} else {
 			// Timer expired or not started - show normal display
 			if (rLevel === 0) {
 				await action.setTitle("Lvl 0");
 			} else {
-				await action.setTitle(`Lvl ${rLevel}\n${rCooldown.toFixed(1)}s`);
+				await action.setTitle(`Lvl ${rLevel}\n${Math.ceil(rCooldown)}`);
 			}
 		}
 	}

@@ -93,17 +93,24 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 		}
 
 		// Set the Q ability image
-		await action.setImage(`imgs/spell/${champion.q.img}`);
+		// Check if timer is active to determine which image to show
+		const timerEnd = manager.getTimerQEnd();
+		const now = Date.now();
+		const isTimerActive = timerEnd > now;
+		
+		if (isTimerActive) {
+			// Timer active - show cooldown image
+			await action.setImage(`imgs/cd/${champion.q.img}`);
+		} else {
+			// Timer not active - show normal image
+			await action.setImage(`imgs/spell/${champion.q.img}`);
+		}
 		
 		// Get current Q level and reduced cooldown from global settings
 		const qLevel = manager.getCurrentQLevel();
 		const qCooldown = manager.getReducedQCooldown();
 		
-		// Check if timer is active
-		const timerEnd = manager.getTimerQEnd();
-		const now = Date.now();
-		
-		if (timerEnd > now) {
+		if (isTimerActive) {
 			// Timer is active - show countdown
 			const remainingSeconds = (timerEnd - now) / 1000;
 			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);

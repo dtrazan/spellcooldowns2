@@ -93,17 +93,24 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 		}
 
 		// Set the W ability image
-		await action.setImage(`imgs/spell/${champion.w.img}`);
+		// Check if timer is active to determine which image to show
+		const timerEnd = manager.getTimerWEnd();
+		const now = Date.now();
+		const isTimerActive = timerEnd > now;
+		
+		if (isTimerActive) {
+			// Timer active - show cooldown image
+			await action.setImage(`imgs/cd/${champion.w.img}`);
+		} else {
+			// Timer not active - show normal image
+			await action.setImage(`imgs/spell/${champion.w.img}`);
+		}
 		
 		// Get current W level and reduced cooldown from global settings
 		const wLevel = manager.getCurrentWLevel();
 		const wCooldown = manager.getReducedWCooldown();
 		
-		// Check if timer is active
-		const timerEnd = manager.getTimerWEnd();
-		const now = Date.now();
-		
-		if (timerEnd > now) {
+		if (isTimerActive) {
 			// Timer is active - show countdown
 			const remainingSeconds = (timerEnd - now) / 1000;
 			await action.setTitle(`${remainingSeconds.toFixed(1)}s`);
