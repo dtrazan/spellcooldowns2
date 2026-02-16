@@ -58,11 +58,19 @@
 			"Name": "Champion Rotator",
 			"UUID": "com.dt.spellcooldowns2.championrotator",
 			"Icon": "imgs/actions/champion-rotator/icon",
-			"Tooltip": "Rotate through League of Legends champions.",
+			"Tooltip": "Rotate through League of Legends champions using the dial.",
 			"PropertyInspectorPath": "ui/champion-rotator.html",
 			"Controllers": [
-				"Keypad"
+				"Keypad",
+				"Encoder"
 			],
+			"Encoder": {
+				"layout": "$X1",
+				"TriggerDescription": {
+					"Rotate": "No action",
+					"Push": "Refresh display"
+				}
+			},
 			"States": [
 				{
 					"Image": "imgs/actions/champion-rotator/key",

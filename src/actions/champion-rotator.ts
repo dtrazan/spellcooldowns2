@@ -1,4 +1,4 @@
-import { action, DidReceiveSettingsEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import { action, DialRotateEvent, DialDownEvent, DidReceiveSettingsEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 import championData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champion.json";
 import abilityOrderData from "../../com.dt.spellcooldowns2.sdPlugin/champion/champion_ability_order.json";
 import { GlobalSettingsManager } from "../global-settings";
@@ -86,6 +86,14 @@ export class RotateChampion extends SingletonAction<RotateChampionSettings> {
 			
 			// Display the champion name
 			await ev.action.setTitle(currentChampion.name || "");
+			
+			// Set feedback for encoder (dial) display using $A1 layout
+			if ('setFeedback' in ev.action) {
+				await ev.action.setFeedback({
+					icon: `imgs/champion/${currentChampion.image}`,
+					title: currentChampion.name || ""
+				});
+			}
 		}
 	}
 
@@ -113,8 +121,48 @@ export class RotateChampion extends SingletonAction<RotateChampionSettings> {
 				// Update the display with the selected champion
 				await ev.action.setImage(`imgs/champion/${imageFile}`);
 				await ev.action.setTitle(championData.name || "");
+				
+				// Set feedback for encoder (dial) display using $A1 layout
+				if ('setFeedback' in ev.action) {
+					await ev.action.setFeedback({
+						icon: `imgs/champion/${imageFile}`,
+						title: championData.name || ""
+					});
+				}
 			} catch (e) {
 				console.error('Failed to parse selected champion:', e);
+			}
+		}
+	}
+
+	/**
+	 * Handle dial rotation - disabled (does nothing)
+	 */
+	override async onDialRotate(ev: DialRotateEvent<RotateChampionSettings>): Promise<void> {
+		// Dial rotation is disabled - no action taken
+	}
+
+	/**
+	 * Handle dial press (optional - could be used for additional functionality)
+	 */
+	override async onDialDown(ev: DialDownEvent<RotateChampionSettings>): Promise<void> {
+		// Optional: You could add functionality here, like resetting to a default champion
+		// For now, just update the display
+		const manager = GlobalSettingsManager.getInstance();
+		const currentChampionId = manager.getCurrentChampion();
+		const champions = loadChampionsFromJson();
+		const currentChampion = champions.find(c => c.id === currentChampionId);
+		
+		if (currentChampion) {
+			await ev.action.setImage(`imgs/champion/${currentChampion.image}`);
+			await ev.action.setTitle(currentChampion.name || "");
+			
+			// Set feedback for encoder (dial) display using $A1 layout
+			if ('setFeedback' in ev.action) {
+				await ev.action.setFeedback({
+					icon: `imgs/champion/${currentChampion.image}`,
+					title: currentChampion.name || ""
+				});
 			}
 		}
 	}
