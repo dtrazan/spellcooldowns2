@@ -167,6 +167,7 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 	/**
 	 * Updates current ability cooldowns based on champion data and ability levels.
 	 * Reads champion.json to get base cooldowns for Q, W, E, R at their respective levels.
+	 * Also calculates reduced cooldowns using the ability haste formula.
 	 */
 	private async updateCurrentCooldowns(): Promise<void> {
 		const manager = GlobalSettingsManager.getInstance();
@@ -196,6 +197,22 @@ export class IncrementLevel extends SingletonAction<IncrementLevelSettings> {
 		await manager.setCurrentWCooldown(wCooldown);
 		await manager.setCurrentECooldown(eCooldown);
 		await manager.setCurrentRCooldown(rCooldown);
+		
+		// Calculate reduced cooldowns using ability haste formula
+		// Formula: reduced_cooldown = current_cooldown * (100 / (100 + ability_haste))
+		const currentBasicHaste = manager.getCurrentBasicHaste();
+		const currentUltimateHaste = manager.getCurrentUltimateHaste();
+		
+		const reducedQCooldown = qCooldown * (100 / (100 + currentBasicHaste));
+		const reducedWCooldown = wCooldown * (100 / (100 + currentBasicHaste));
+		const reducedECooldown = eCooldown * (100 / (100 + currentBasicHaste));
+		const reducedRCooldown = rCooldown * (100 / (100 + currentUltimateHaste));
+		
+		// Update global settings with reduced cooldowns
+		await manager.setReducedQCooldown(reducedQCooldown);
+		await manager.setReducedWCooldown(reducedWCooldown);
+		await manager.setReducedECooldown(reducedECooldown);
+		await manager.setReducedRCooldown(reducedRCooldown);
 	}
 
 	/**

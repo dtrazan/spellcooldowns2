@@ -66,15 +66,15 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 		// Set the Q ability image
 		await action.setImage(`imgs/spell/${champion.q.img}`);
 		
-		// Get current Q level and cooldown from global settings
+		// Get current Q level and reduced cooldown from global settings
 		const qLevel = manager.getCurrentQLevel();
-		const qCooldown = manager.getCurrentQCooldown();
+		const qCooldown = manager.getReducedQCooldown();
 		
 		// Display level and cooldown
 		if (qLevel === 0) {
 			await action.setTitle("Lvl 0");
 		} else {
-			await action.setTitle(`Lvl ${qLevel}\n${qCooldown}s`);
+			await action.setTitle(`Lvl ${qLevel}\n${qCooldown.toFixed(1)}s`);
 		}
 	}
 }

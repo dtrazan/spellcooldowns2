@@ -66,15 +66,15 @@ export class DisplayE extends SingletonAction<DisplayESettings> {
 		// Set the E ability image
 		await action.setImage(`imgs/spell/${champion.e.img}`);
 		
-		// Get current E level and cooldown from global settings
+		// Get current E level and reduced cooldown from global settings
 		const eLevel = manager.getCurrentELevel();
-		const eCooldown = manager.getCurrentECooldown();
+		const eCooldown = manager.getReducedECooldown();
 		
 		// Display level and cooldown
 		if (eLevel === 0) {
 			await action.setTitle("Lvl 0");
 		} else {
-			await action.setTitle(`Lvl ${eLevel}\n${eCooldown}s`);
+			await action.setTitle(`Lvl ${eLevel}\n${eCooldown.toFixed(1)}s`);
 		}
 	}
 }
