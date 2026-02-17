@@ -64,6 +64,16 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		// Update total legend stack
 		await this.updateTotalLegendStack();
 		
+		// Refund ultimate cooldown if Axiom Arcanist is active
+		if (manager.getHasAxiomArcanist()) {
+			await this.refundUltimateCooldown();
+		}
+		
+		// Refund basic cooldown if Transcendence is active and level 11+
+		if (manager.getHasTranscendence() && manager.getCurrentChampionLevel() >= 11) {
+			await this.refundBasicCooldown();
+		}
+		
 		// Update the property inspector setting (as number)
 		await ev.action.setSettings({ takedownCount: newCount });
 		
@@ -89,6 +99,67 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		const manager = GlobalSettingsManager.getInstance();
 		const count = manager.getCurrentTakedowns();
 		await action.setTitle(`TD\n${count}`);
+	}
+
+	/**
+	 * Refunds ultimate cooldown on takedown.
+	 */
+	private async refundUltimateCooldown(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		const timerREnd = manager.getTimerREnd();
+		const currentTime = Date.now();
+		
+		// Check if ultimate timer is running
+		if (timerREnd > currentTime) {
+			// Calculate remaining time
+			const remainingTime = timerREnd - currentTime;
+			
+			// Reduce remaining time by 7%
+			const refundAmount = remainingTime * 0.07;
+			const newRemainingTime = remainingTime - refundAmount;
+			
+			// Update the timer end timestamp
+			const newTimerREnd = currentTime + newRemainingTime;
+			await manager.setTimerREnd(newTimerREnd);
+		}
+	}
+
+	/**
+	 * Refunds basic cooldown on takedown.
+	 */
+	private async refundBasicCooldown(): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		const currentTime = Date.now();
+		
+		// Check Q timer
+		const timerQEnd = manager.getTimerQEnd();
+		if (timerQEnd > currentTime) {
+			const remainingTime = timerQEnd - currentTime;
+			const refundAmount = remainingTime * 0.20;
+			const newRemainingTime = remainingTime - refundAmount;
+			const newTimerQEnd = currentTime + newRemainingTime;
+			await manager.setTimerQEnd(newTimerQEnd);
+		}
+		
+		// Check W timer
+		const timerWEnd = manager.getTimerWEnd();
+		if (timerWEnd > currentTime) {
+			const remainingTime = timerWEnd - currentTime;
+			const refundAmount = remainingTime * 0.20;
+			const newRemainingTime = remainingTime - refundAmount;
+			const newTimerWEnd = currentTime + newRemainingTime;
+			await manager.setTimerWEnd(newTimerWEnd);
+		}
+		
+		// Check E timer
+		const timerEEnd = manager.getTimerEEnd();
+		if (timerEEnd > currentTime) {
+			const remainingTime = timerEEnd - currentTime;
+			const refundAmount = remainingTime * 0.20;
+			const newRemainingTime = remainingTime - refundAmount;
+			const newTimerEEnd = currentTime + newRemainingTime;
+			await manager.setTimerEEnd(newTimerEEnd);
+		}
 	}
 }
 

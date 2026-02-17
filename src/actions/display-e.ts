@@ -115,8 +115,20 @@ export class DisplayE extends SingletonAction<DisplayESettings> {
 		
 		if (isTimerActive) {
 			// Timer is active - show countdown
-			const remainingSeconds = Math.ceil((timerEnd - now) / 1000);
-			await action.setTitle(`${remainingSeconds}`);
+			const remainingMs = timerEnd - now;
+			let displayValue: string;
+			
+			if (remainingMs < 1000) {
+				// Last second - show decimal (0.9, 0.8, 0.7, etc.)
+				const remainingSeconds = (remainingMs / 1000).toFixed(1);
+				displayValue = remainingSeconds;
+			} else {
+				// More than 1 second - show ceil value
+				const remainingSeconds = Math.ceil(remainingMs / 1000);
+				displayValue = `${remainingSeconds}`;
+			}
+			
+			await action.setTitle(displayValue);
 		} else {
 			// Timer expired or not started - show normal display
 			if (eLevel === 0) {
