@@ -1,12 +1,13 @@
 import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 import { GlobalSettingsManager } from "../global-settings";
+import { DisplayHaste } from "./display-haste";
 
 /**
  * An action that increments the takedown count.
  */
 @action({ UUID: "com.dt.spellcooldowns2.incrementtakedown" })
 export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings> {
-	private static readonly MAX_TAKEDOWNS = 10;
+	private static readonly MAX_TAKEDOWNS = 28;
 
 	/**
 	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible.
@@ -61,8 +62,19 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		const newCount = currentCount >= IncrementTakedown.MAX_TAKEDOWNS ? 0 : currentCount + 1;
 		await manager.setCurrentTakedowns(newCount);
 		
+		// Also increment current_legend_stack (max 10)
+		const currentLegendStack = manager.getCurrentLegendStack();
+		const newLegendStack = currentLegendStack >= 10 ? 10 : currentLegendStack + 1;
+		await manager.setCurrentLegendStack(newLegendStack);
+		
+		// Update legend bonus based on new stack count
+		await this.updateLegendBonus(newLegendStack);
+		
 		// Update total legend stack
 		await this.updateTotalLegendStack();
+		
+		// Recalculate haste values (calls DisplayHaste calculation)
+		await DisplayHaste.calculateAndUpdateHaste();
 		
 		// Refund ultimate cooldown if Axiom Arcanist is active
 		if (manager.getHasAxiomArcanist()) {
@@ -79,6 +91,45 @@ export class IncrementTakedown extends SingletonAction<IncrementTakedownSettings
 		
 		// Update display
 		await this.updateDisplay(ev.action);
+	}
+
+	/**
+	 * Updates the cd_legend_bonus based on the number of stacks and recalculates mastery haste.
+	 * @param stacks The number of legend stacks (0-10)
+	 */
+	private async updateLegendBonus(stacks: number): Promise<void> {
+		const manager = GlobalSettingsManager.getInstance();
+		const HASTE_PER_STACK = 1.5;
+		
+		// Calculate the bonus haste from legend stacks
+		const legendBonus = stacks * HASTE_PER_STACK;
+		
+		// Get the old legend bonus to calculate the difference
+		const oldLegendBonus = manager.getCdLegendBonus();
+		
+		// Update the cd_legend_bonus
+		await manager.setCdLegendBonus(legendBonus);
+		
+		// Recalculate current_mastery_haste
+		let masteryHaste = 0;
+		if (manager.getHasCdShard()) {
+			masteryHaste += manager.getCdShardBonus();
+		}
+		if (manager.getHasLegendHaste()) {
+			masteryHaste += legendBonus;
+		}
+		
+		// Get old mastery haste
+		const oldMasteryHaste = manager.getCurrentMasteryHaste();
+		
+		// Update current_mastery_haste
+		await manager.setCurrentMasteryHaste(masteryHaste);
+		
+		// Update current_basic_haste and current_ultimate_haste by adjusting for mastery haste change
+		const currentBasicHaste = manager.getCurrentBasicHaste();
+		const currentUltimateHaste = manager.getCurrentUltimateHaste();
+		await manager.setCurrentBasicHaste(currentBasicHaste - oldMasteryHaste + masteryHaste);
+		await manager.setCurrentUltimateHaste(currentUltimateHaste - oldMasteryHaste + masteryHaste);
 	}
 
 	/**

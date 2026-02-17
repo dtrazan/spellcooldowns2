@@ -25,9 +25,10 @@ export class DisplayHaste extends SingletonAction<DisplayHasteSettings> {
 	}
 
 	/**
-	 * Calculates total ability haste and updates the display.
+	 * Public static method to calculate and update haste values in global settings.
+	 * Can be called from other actions to trigger haste recalculation.
 	 */
-	private async updateHasteDisplay(action: any): Promise<void> {
+	static async calculateAndUpdateHaste(): Promise<void> {
 		const manager = GlobalSettingsManager.getInstance();
 		const grid = manager.getItemsGrid();
 		
@@ -83,9 +84,18 @@ export class DisplayHaste extends SingletonAction<DisplayHasteSettings> {
 		await manager.setCurrentUltimateHaste(currentUltimateHaste);
 
 		// Recalculate reduced cooldowns with new haste values
-		await this.updateReducedCooldowns();
+		await DisplayHaste.updateReducedCooldowns();
+	}
+
+	/**
+	 * Calculates total ability haste and updates the display.
+	 */
+	private async updateHasteDisplay(action: any): Promise<void> {
+		// Use the static method to calculate and update haste
+		await DisplayHaste.calculateAndUpdateHaste();
 
 		// Display basic haste and ultimate haste from global settings
+		const manager = GlobalSettingsManager.getInstance();
 		const basicHaste = manager.getCurrentBasicHaste();
 		const ultimateHaste = manager.getCurrentUltimateHaste();
 		await action.setTitle(`${basicHaste}\n${ultimateHaste}`);
@@ -94,7 +104,7 @@ export class DisplayHaste extends SingletonAction<DisplayHasteSettings> {
 	/**
 	 * Recalculates reduced cooldowns based on current haste and base cooldowns.
 	 */
-	private async updateReducedCooldowns(): Promise<void> {
+	private static async updateReducedCooldowns(): Promise<void> {
 		const manager = GlobalSettingsManager.getInstance();
 		
 		// Get current champion

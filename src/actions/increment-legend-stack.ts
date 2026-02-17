@@ -1,5 +1,6 @@
-import { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
-import { GlobalSettingsManager } from "../global-settings";
+import streamDeck, { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import { GlobalSettingsManager, GlobalSettings } from "../global-settings";
+import { DisplayHaste } from "./display-haste";
 
 /**
  * An action that increments the legend stacks (max 15).
@@ -26,6 +27,11 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 		
 		// Display the current legend stacks
 		await this.updateStackDisplay(ev.action);
+		
+		// Listen for global settings changes to update display
+		streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((globalEv) => {
+			this.updateStackDisplay(ev.action);
+		});
 	}
 
 	/**
@@ -55,11 +61,27 @@ export class IncrementLegendStack extends SingletonAction<IncrementLegendStackSe
 
 	/**
 	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed.
-	 * Key press functionality disabled - use Property Inspector to change stacks.
+	 * Increments the legend stack count (max 10, then wraps to 0).
 	 */
 	override async onKeyDown(ev: KeyDownEvent<IncrementLegendStackSettings>): Promise<void> {
-		// Increment functionality disabled - only update display
-		// Use Property Inspector to change legend stacks
+		const manager = GlobalSettingsManager.getInstance();
+		const currentStacks = manager.getCurrentLegendStack();
+		
+		// Increment legend stack count, wrapping from MAX_STACKS to 0
+		const newStacks = currentStacks >= IncrementLegendStack.MAX_STACKS ? 0 : currentStacks + 1;
+		await manager.setCurrentLegendStack(newStacks);
+		
+		// Update cd_legend_bonus based on stacks
+		await this.updateLegendBonus(newStacks);
+		
+		// Update total legend stack
+		await this.updateTotalLegendStack();
+		
+		// Recalculate haste values (calls DisplayHaste calculation)
+		await DisplayHaste.calculateAndUpdateHaste();
+		
+		// Update the property inspector setting (as number)
+		await ev.action.setSettings({ legendStacks: newStacks });
 		
 		// Update display
 		await this.updateStackDisplay(ev.action);

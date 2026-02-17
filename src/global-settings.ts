@@ -134,8 +134,8 @@ export class GlobalSettingsManager {
 			this.settings.cd_transcendence_bonus = 0;
 			bonusValuesNeedSave = true;
 		}
-		if (this.settings.current_legend_stacks === undefined) {
-			this.settings.current_legend_stacks = 0;
+		if (this.settings.current_legend_stack === undefined) {
+			this.settings.current_legend_stack = 0;
 			bonusValuesNeedSave = true;
 		}
 		if (this.settings.total_legend_stack === undefined) {
