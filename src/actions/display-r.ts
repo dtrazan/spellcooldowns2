@@ -62,7 +62,8 @@ export class DisplayR extends SingletonAction<DisplayRSettings> {
 		} else {
 			// Timer not running - start it
 			const rCooldown = manager.getReducedRCooldown();
-			const timerEnd = now + (rCooldown * 1000);
+			const setDelay = manager.getSetDelay();
+			const timerEnd = now + (rCooldown * 1000) - setDelay;
 			await manager.setTimerREnd(timerEnd);
 		}
 		

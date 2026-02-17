@@ -208,6 +208,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Set Delay",
+			"UUID": "com.dt.spellcooldowns2.setdelay",
+			"Icon": "imgs/actions/set-delay/icon",
+			"Tooltip": "Set a delay value in milliseconds.",
+			"PropertyInspectorPath": "ui/set-delay.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/set-delay/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "spellcooldowns2",

@@ -62,7 +62,8 @@ export class DisplayW extends SingletonAction<DisplayWSettings> {
 		} else {
 			// Timer not running - start it
 			const wCooldown = manager.getReducedWCooldown();
-			const timerEnd = now + (wCooldown * 1000);
+			const setDelay = manager.getSetDelay();
+			const timerEnd = now + (wCooldown * 1000) - setDelay;
 			await manager.setTimerWEnd(timerEnd);
 		}
 		

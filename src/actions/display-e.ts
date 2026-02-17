@@ -62,7 +62,8 @@ export class DisplayE extends SingletonAction<DisplayESettings> {
 		} else {
 			// Timer not running - start it
 			const eCooldown = manager.getReducedECooldown();
-			const timerEnd = now + (eCooldown * 1000);
+			const setDelay = manager.getSetDelay();
+			const timerEnd = now + (eCooldown * 1000) - setDelay;
 			await manager.setTimerEEnd(timerEnd);
 		}
 		

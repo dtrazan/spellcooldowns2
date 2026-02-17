@@ -62,7 +62,8 @@ export class DisplayQ extends SingletonAction<DisplayQSettings> {
 		} else {
 			// Timer not running - start it
 			const qCooldown = manager.getReducedQCooldown();
-			const timerEnd = now + (qCooldown * 1000);
+			const setDelay = manager.getSetDelay();
+			const timerEnd = now + (qCooldown * 1000) - setDelay;
 			await manager.setTimerQEnd(timerEnd);
 		}
 		

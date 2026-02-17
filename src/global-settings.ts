@@ -35,6 +35,7 @@ export interface GlobalSettings extends Record<string, any> {
 	current_legend_stack?: number;
 	total_legend_stack?: number;
 	current_takedowns?: number;
+	set_delay?: number;
 	current_champion?: string;
 	current_champion_level?: number;
 	current_q_level?: number;
@@ -144,6 +145,10 @@ export class GlobalSettingsManager {
 		}
 		if (this.settings.current_takedowns === undefined) {
 			this.settings.current_takedowns = 0;
+			bonusValuesNeedSave = true;
+		}
+		if (this.settings.set_delay === undefined) {
+			this.settings.set_delay = 0;
 			bonusValuesNeedSave = true;
 		}
 
@@ -586,6 +591,21 @@ export class GlobalSettingsManager {
 	 */
 	async setCurrentTakedowns(value: number): Promise<void> {
 		this.settings.current_takedowns = value;
+		await this.saveSettings();
+	}
+
+	/**
+	 * Gets the set delay value.
+	 */
+	getSetDelay(): number {
+		return this.settings.set_delay ?? 0;
+	}
+
+	/**
+	 * Sets the set delay value.
+	 */
+	async setSetDelay(value: number): Promise<void> {
+		this.settings.set_delay = value;
 		await this.saveSettings();
 	}
 

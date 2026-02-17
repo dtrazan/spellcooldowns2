@@ -12,6 +12,7 @@ import { DisplayR } from "./actions/display-r";
 import { IncrementLevel } from "./actions/increment-level";
 import { IncrementLegendStack } from "./actions/increment-legend-stack";
 import { IncrementTakedown } from "./actions/increment-takedown";
+import { SetDelay } from "./actions/set-delay";
 import { GlobalSettingsManager } from "./global-settings";
 
 // We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information
@@ -52,6 +53,9 @@ streamDeck.actions.registerAction(new IncrementLegendStack());
 
 // Register the increment takedown action.
 streamDeck.actions.registerAction(new IncrementTakedown());
+
+// Register the set delay action.
+streamDeck.actions.registerAction(new SetDelay());
 
 // Initialize global settings manager
 GlobalSettingsManager.getInstance().initialize();
